@@ -7,5 +7,39 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+model Tenant {
+  id        String   @id @default(cuid()) @db.Text
+  name      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  users     User[]
+  activities Activity[]
+}
+
+model User {
+  id        String   @id @default(cuid()) @db.Text
+  email     String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
+  activities Activity[]
+}
+
+model Activity {
+  id        String   @id @default(cuid()) @db.Text
+  name      String?
+  startAt   DateTime
+  endAt     DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  tenantId  String?
+  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
+  userId    String
+  user      User?    @relation(fields: [userId], references: [id])
 }
