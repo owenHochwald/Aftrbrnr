@@ -20,38 +20,45 @@ const authOption: NextAuthOptions = {
     ],
     callbacks: {
       async signIn({ account, profile }) {
+        console.log(account, profile)
+
         if (!profile?.email) {
           throw new Error('No profile')
         }
   
-        await prisma.user.upsert({
+        const user = await prisma.user.upsert({
           where: {
             email: profile.email,
           },
           create: {
             email: profile.email,
             name: profile.name,
+            avatar: (profile as any).picture,
+            tenant: {}
           },
           update: {
             name: profile.name,
           },
         })
+
+        console.log('user', user)
+
         return true
-      },
-      session,
-      async jwt({ token, user, account, profile }) {
-        if (profile) {
-          const user = await prisma.user.findUnique({
-            where: {
-              email: profile.email,
-            },
-          })
-          if (!user) {
-            throw new Error('No user found')
-          }
-          token.id = user.id
-        }
-        return token
+    //   },
+    //   session,
+    //   async jwt({ token, user, account, profile }) {
+    //     if (profile) {
+    //       const user = await prisma.user.findUnique({
+    //         where: {
+    //           email: profile.email,
+    //         },
+    //       })
+    //       if (!user) {
+    //         throw new Error('No user found')
+    //       }
+    //       token.id = user.id
+    //     }
+    //     return token
       },
     },
   }
