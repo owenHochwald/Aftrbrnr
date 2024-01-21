@@ -7,7 +7,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url = env("DATABASE_URL") // uses connection pooling
+  // url = env("DATABASE_URL") // dev environment
+  url = env("DATABASE_PRISMA_URL") // production environment
+
 }
 
 model Tenant {
