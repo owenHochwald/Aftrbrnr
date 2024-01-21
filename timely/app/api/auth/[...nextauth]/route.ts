@@ -4,6 +4,8 @@ import { NextAuthOptions } from 'next-auth'
 import NextAuth from 'next-auth/next'
 import GoogleProvider from 'next-auth/providers/google'
 
+// import { session } from '@/lib/auth'
+
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!
@@ -18,14 +20,14 @@ const authOption: NextAuthOptions = {
         clientSecret: GOOGLE_CLIENT_SECRET,
       }),
     ],
+    
     callbacks: {
       async signIn({ account, profile }) {
-        console.log(account, profile)
-
+        // If there is an error
         if (!profile?.email) {
           throw new Error('No profile')
         }
-  
+        // creating user
         const user = await prisma.user.upsert({
           where: {
             email: profile.email,
@@ -34,14 +36,15 @@ const authOption: NextAuthOptions = {
             email: profile.email,
             name: profile.name,
             avatar: (profile as any).picture,
-            tenant: {}
+            tenant: {
+              create: {}
+            }
           },
           update: {
             name: profile.name,
+            avatar: (profile as any).picture,
           },
         })
-
-        console.log('user', user)
 
         return true
     //   },
