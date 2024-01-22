@@ -6,7 +6,8 @@
  - [ ] Projects
  - [ ] Teams
  - [ ] Organizations
- - [ ] Authentication
+ - [X] Authentication
+ - [X] Data Model 
 
 
 
