@@ -1,5 +1,8 @@
-import Image from 'next/image'
+import { NavBar } from '@/components/nav-bar'
 
 export default function Home() {
-  return <main className=""></main>
+  return <>
+  <NavBar />
+  <main className="">Home Page</main>
+  </>
 }
