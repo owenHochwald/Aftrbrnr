@@ -1,9 +1,7 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
+
 datasource db {
   provider = "postgresql"
   // url = env("DATABASE_URL") // dev environment
@@ -27,8 +25,8 @@ model User {
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tenantId  String?
-  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
   activities Activity[]
 }
 
@@ -39,8 +37,8 @@ model Activity {
   endAt     DateTime?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  tenantId  String?
-  tenant    Tenant?  @relation(fields: [tenantId], references: [id])
+  tenantId  String
+  tenant    Tenant  @relation(fields: [tenantId], references: [id])
   userId    String
-  user      User?    @relation(fields: [userId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }

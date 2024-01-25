@@ -1,6 +1,6 @@
 import { getUserSession } from '@/lib/auth'
 import Link from 'next/link'
-import { Avatar, AvatarImage } from '../ui/avatar'
+import { Avatar } from './avatar'
 
 const links = [{href: "/track", label: "Track"}]
 
@@ -28,9 +28,7 @@ export async function NavBar () {
                     </ul>
                 </nav>
                 <span className="flex-grow"/>
-                    <Avatar>
-                        <AvatarImage src={user.image} referrerPolicy='no-referrer' />
-                    </Avatar>
+                <Avatar user={user}/>
             </div>
         </div>
     )
