@@ -13,30 +13,33 @@ type Props = {
 }
 
 type EditDateTimeprops = {
+    name?: string
     value: Date
-    onChange: (value: Date) => void
+    onChange?: (value: Date) => void
 }
 
-const EditDateTime = ({ value, onChange }: EditDateTimeprops) => {
+const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
     const [date, setDate] = useState(value)
 
     return (
-        <div className='relative flex items-center'>
-            <Input
-             type="time"
-             name="time"
-             value={`${pad(date.getHours())}:${pad(date.getMinutes())}`}
-             className="pr-8"
-             onChange={(e) => {
-                 const [hours, minutes] = e.target.value.split(':')
-                 const newDate = new Date(date)
-                 newDate.setHours(parseInt(hours) || 0)
-                 newDate.setMinutes(parseInt(minutes) || 0)
-                 setDate(newDate)
-                 onChange(newDate)
-             }} />
-
-            <Calendar size={16} className='absolute right-2' />
+        <div>
+            <div className='relative flex items-center'>
+                <input type="hidden" name={name} defaultValue={date.toISOString()} />
+                <Input
+                    type="time"
+                    value={`${pad(date.getHours())}:${pad(date.getMinutes())}`}
+                    className="pr-8"
+                    onChange={(e) => {
+                        const [hours, minutes] = e.target.value.split(':')
+                        const newDate = new Date(date)
+                        newDate.setHours(parseInt(hours) || 0)
+                        newDate.setMinutes(parseInt(minutes) || 0)
+                        setDate(newDate)
+                        onChange && onChange(newDate)
+                    }}
+                />
+                <Calendar size={16} className='absolute right-2' />
+            </div>
         </div>
     )
 }
@@ -46,6 +49,7 @@ type EditRowProps = Props & {
 }
 
 const EditItemRow = ({ activity, onSave }: EditRowProps) => {
+    // const [test, setTest] = useState
     return (
         <li className='py-5'>
             <form action={async (data) => {
@@ -55,12 +59,13 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                 className='flex items-center space-x-2'
             >
                 <Input
-                 className='w-[300px]'
-                 type="text"
-                 name="name"
-                 defaultValue={activity.name || ''}
+                    className='w-[300px]'
+                    type="text"
+                    name="name"
+                    defaultValue={activity.name || ''}
                 />
-                <EditDateTime value={activity.startAt} onChange={() => {}}/>
+                <EditDateTime name="startAt" value={activity.startAt}/>
+                <EditDateTime name="endAt" value={activity.endAt || new Date()}/>
                 <Button type="submit">Save</Button>
             </form>
         </li>
