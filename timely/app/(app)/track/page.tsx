@@ -6,6 +6,7 @@ import { Activity } from "@prisma/client"
 import { revalidatePath } from "next/cache"
 import { ActivityDuration } from "./duration"
 import { ArrowRight } from "lucide-react"
+import { ActivityItemRow } from "./activity-item-row"
 
 type TimeProps = {
     startAt: string
@@ -78,22 +79,7 @@ const DailyActivites = ({ activites }: DailyActivitesProps) => {
             <h2 className="text-lg mb-2 font-semibold">Your work for today!</h2>
             <ul>{
                 activites.map(activity => (
-                    <li className='py-2 space-x-2 flex items-center' key={activity.id}>
-                        <span className="text-md font-medium w-1/5">{activity.name}</span>
-                        <span>
-                            {new Intl.DateTimeFormat(undefined, {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                            }).format(activity.startAt)}
-                        </span>
-                        <ArrowRight size={20}/>
-                        <span>
-                            {new Intl.DateTimeFormat(undefined, {
-                                hour: 'numeric',
-                                minute: 'numeric',
-                            }).format(activity.endAt || new Date())}
-                        </span>
-                    </li>
+                    <ActivityItemRow activity={activity} key={activity.id} />
                 ))
             }</ul>
         </div>
