@@ -1,12 +1,18 @@
 'use client'
 
-import { pad } from '@/lib/utils'
+import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { pad } from '@/lib/utils'
 import { Activity } from "@prisma/client"
 import { useState } from "react"
-import { ArrowRight, Calendar } from "lucide-react"
-import { updateActivity } from "./actions"
-import { Button } from "@/components/ui/button"
+import { ArrowRight, CalendarIcon } from "lucide-react"
+import { updateActivity, deleteActivity } from "./actions"
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from "@/components/ui/popover"
 
 type Props = {
     activity: Activity
@@ -20,6 +26,17 @@ type EditDateTimeprops = {
 
 const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
     const [date, setDate] = useState(value)
+
+    const onDate = (d: Date | undefined) => {
+        if (!d) return
+
+        // creating a new date with the same time
+        d.setHours(d.getHours())
+        d.setMinutes(d.getMinutes())
+        d.setSeconds(d.getSeconds())
+        setDate(d)
+        onChange && onChange(d)
+    }
 
     return (
         <div>
@@ -38,7 +55,16 @@ const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
                         onChange && onChange(newDate)
                     }}
                 />
-                <Calendar size={16} className='absolute right-2' />
+                <Popover>
+                    <PopoverTrigger className="absolute right-2 h-4 w-4">
+                        <CalendarIcon size={16}/>
+                    </PopoverTrigger>
+                    <PopoverContent>
+                        <Calendar
+                            mode="single" selected={date} onSelect={onDate}/>
+                    </PopoverContent>
+                </Popover>
+
             </div>
         </div>
     )
@@ -49,7 +75,6 @@ type EditRowProps = Props & {
 }
 
 const EditItemRow = ({ activity, onSave }: EditRowProps) => {
-    // const [test, setTest] = useState
     return (
         <li className='py-5'>
             <form action={async (data) => {
@@ -58,6 +83,7 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
             }}
                 className='flex items-center space-x-2'
             >
+                <input type='hidden' defaultValue={activity.id} name="id" />
                 <Input
                     className='w-[300px]'
                     type="text"
@@ -66,13 +92,20 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                 />
                 <EditDateTime name="startAt" value={activity.startAt}/>
                 <EditDateTime name="endAt" value={activity.endAt || new Date()}/>
+                <span className="flex-grow"/>
                 <Button type="submit">Save</Button>
             </form>
         </li>
     )
 }
 
-const ReadItemRow = ({ activity }: Props) => {
+type ReadItemRowProps = Props & {
+    edit: () => void
+    onDelete: (id: string) => void
+}
+
+
+const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
     return (
         <li className='py-3 space-x-5 flex items-center'>
             <span className="text-md font-medium w-1/4">{activity.name}</span>
@@ -89,6 +122,9 @@ const ReadItemRow = ({ activity }: Props) => {
                     minute: 'numeric',
                 }).format(activity.endAt || new Date())}
             </span>
+            <span className='flex-grow'/>
+            <Button onClick={edit}>Edit</Button>
+            <Button onClick={ async () => onDelete(activity.id)} className="ml-2" variant="outline">Delete</Button>
         </li>
     )
 }
@@ -100,8 +136,7 @@ export const ActivityItemRow = ({ activity }: Props) => {
         <EditItemRow activity={activity} onSave={() => setIsEditing(false)} />
     ) : (
         <>
-            <ReadItemRow activity={activity} />
-            <Button className="flex items-center space-x-2" onClick={() => setIsEditing(true)}>Edit</Button>
+            <ReadItemRow activity={activity} edit= { () => setIsEditing(true)} onDelete={ deleteActivity }/>
         </>
     )
 }
