@@ -1,6 +1,8 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
+import { formatDuration } from 'date-fns'
+
 import { Input } from "@/components/ui/input"
 import { pad } from '@/lib/utils'
 import { Activity } from "@prisma/client"
@@ -13,6 +15,7 @@ import {
     PopoverContent,
     PopoverTrigger
 } from "@/components/ui/popover"
+import { Badge } from "@/components/ui/badge"
 
 type Props = {
     activity: Activity
@@ -122,6 +125,7 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                     minute: 'numeric',
                 }).format(activity.endAt || new Date())}
             </span>
+            <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
             <span className='flex-grow'/>
             <Button onClick={edit}>Edit</Button>
             <Button onClick={ async () => onDelete(activity.id)} className="ml-2" variant="outline">Delete</Button>

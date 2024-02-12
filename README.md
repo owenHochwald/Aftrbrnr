@@ -11,7 +11,8 @@
  - [X] Create Tickets
  - [X] Update Tickets
  - [X] Read Tickets
- - [ ] Delete Tickets 
+ - [X] Delete Tickets 
+ - [X] Time Duration
 
 
 
