@@ -13,6 +13,8 @@
  - [X] Read Tickets
  - [X] Delete Tickets 
  - [X] Time Duration
+ - [ ] Invoice / Exportable Version of Hours
+ - [ ] Custom Timers
 
 
 
