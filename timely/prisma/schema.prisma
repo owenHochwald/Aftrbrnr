@@ -5,54 +5,70 @@ generator client {
 datasource db {
   provider = "postgresql"
   // url = env("DATABASE_URL") // dev environment
-  url = env("DATABASE_PRISMA_URL") // production environment
-
+  url      = env("DATABASE_PRISMA_URL") // production environment
 }
 
 model Tenant {
-  id        String   @id @default(dbgenerated("concat('tnt_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  name      String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     User[]
+  id         String     @id @default(dbgenerated("concat('tnt_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  name       String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  users      User[]
   activities Activity[]
-  clients   Client[]
+  clients    Client[]
+  projects   Project[]
 }
 
 model User {
-  id        String   @id @default(dbgenerated("concat('usr_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  email     String   @unique
-  name      String?
-  avatar    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tenantId  String   @db.Text
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
+  id         String     @id @default(dbgenerated("concat('usr_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  email      String     @unique
+  name       String?
+  avatar     String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  tenantId   String     @db.Text
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
   activities Activity[]
 }
 
 model Activity {
-  id        String   @id @default(dbgenerated("concat('act_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  id        String    @id @default(dbgenerated("concat('act_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
   name      String?
   startAt   DateTime
   endAt     DateTime?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   tenantId  String
-  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  tenant    Tenant    @relation(fields: [tenantId], references: [id])
   userId    String
-  user      User    @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
   clientId  String?
-  client    Client?  @relation(fields: [clientId], references: [id])
+  client    Client?   @relation(fields: [clientId], references: [id])
+  projectId String?   @db.Text
+  project   Project?  @relation(fields: [projectId], references: [id])
 }
 
 model Client {
-  id        String   @id @default(dbgenerated("concat('cli_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
-  name      String
-  color    String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  tenantId  String
-  tenant    Tenant  @relation(fields: [tenantId], references: [id])
+  id         String     @id @default(dbgenerated("concat('cli_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  name       String
+  color      String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  activities Activity[]
+  projects   Project[]
+}
+
+model Project {
+  id         String     @id @default(dbgenerated("concat('prj_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
+  name       String
+  color      String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  tenantId   String
+  tenant     Tenant     @relation(fields: [tenantId], references: [id])
+  clientId   String
+  client     Client     @relation(fields: [clientId], references: [id])
   activities Activity[]
 }
