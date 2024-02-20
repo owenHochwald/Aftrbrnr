@@ -4,8 +4,7 @@
  - [X] Time Tracking by Activity
  - [ ] Clients
  - [ ] Projects
- - [ ] Teams
- - [ ] Organizations
+ - [ ] Organizations associated with projects / activities
  - [X] Authentication
  - [X] Data Model
  - [X] Create Tickets
@@ -15,6 +14,8 @@
  - [X] Time Duration
  - [ ] Invoice / Exportable Version of Hours
  - [ ] Custom Timers
+ - [ ] Add accomplishments by day in a bar chart by day
+ - [ ] Make create page as a general component
 
 
 

@@ -3,6 +3,7 @@ import { Input } from '@/components/ui/input'
 import { getUserSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import Link from 'next/link'
 import { redirect } from 'next/navigation'
 
 type ClientPageProps = {
@@ -49,7 +50,6 @@ export default async function ClientEditPage({ params }: ClientPageProps) {
     <form action={editClient}>
       <div className="flex justify-between items-center">
         <h2 className="text-lg font-medium mb-2">Edit Client</h2>
-        <Button type="submit">Save</Button>
       </div>
       <div className="flex items-center gap-4">
         <input type="hidden" defaultValue={client.id} />
@@ -63,10 +63,17 @@ export default async function ClientEditPage({ params }: ClientPageProps) {
         <Input
           type="text"
           name="name"
-          placeholder="Client name"
+          placeholder="Client Name"
           className="w-full"
           defaultValue={client.name || ''}
         />
+      </div>
+      <div>
+        <Button type="submit">Save</Button>
+
+        <Button variant={'destructive'} asChild>
+          <Link href={`/clients/${client.id}`}>Cancel</Link>
+        </Button>
       </div>
     </form>
   )
