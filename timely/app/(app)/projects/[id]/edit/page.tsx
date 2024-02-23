@@ -1,17 +1,13 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { getUserSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 
-// type ProjectPageProps = {
-//   params: {
-//     id: string
-//   }
-// }
 
 export default async function ProjectEditPage({ params }: { params: { id: string } }) {
     const user = await getUserSession()
@@ -19,29 +15,40 @@ export default async function ProjectEditPage({ params }: { params: { id: string
         where: {
             tenantId: user.tenant.id,
             id: params.id
+        }, include: {
+            client: true
         }
     })
 
+    const clients = (await prisma.client.findMany({
+        where: {
+            tenantId: user.tenant.id
+        }
+    })).map((client) => ({
+        label: client.name,
+        value: client.id
+    }))
+
+
     if (!project) notFound()
-    //   {
-    //     return redirect('/projects')
-    //   }
 
     async function editProject(data: FormData) {
         'use server'
+
+        const client = data.get('client') as string
+
         if (!project) return redirect('/projects')
 
         const user = await getUserSession()
         await prisma.project.updateMany({
             where: {
-                tenant: {
-                    id: user.tenant.id
-                },
-                id: project.id
+                tenantId: user.tenant.id,
+                id: params.id
             },
             data: {
                 name: data.get('name') as string,
-                color: data.get('color') as string
+                color: data.get('color') as string,
+                clientId: client ? client : null
             }
         })
         revalidatePath(`/projects/${project.id}`)
@@ -73,8 +80,29 @@ export default async function ProjectEditPage({ params }: { params: { id: string
                 />
             </div>
             <div>
+                <Label htmlFor="email">Client</Label>
+                <Select name='client' defaultValue={project.clientId || ''}>
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="Assign a client" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectLabel>Clients</SelectLabel>
+                            <SelectItem value="name">None</SelectItem>
+                            {
+                                clients.map((client) => (
+                                    <SelectItem value={client.value} key={client.value}>
+                                        {client.label}
+                                    </SelectItem>
+                                ))
+                            }
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
+            </div>
+            <div>
                 <Button type="submit">Save</Button>
-                <Button variant={'destructive'}asChild>
+                <Button variant={'destructive'} asChild>
                     <Link href={`/projects/${project.id}`}>Cancel</Link>
                 </Button>
             </div>

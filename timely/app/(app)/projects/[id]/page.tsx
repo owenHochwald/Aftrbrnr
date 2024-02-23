@@ -30,7 +30,7 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     async function deleteProject() {
         'use server'
         if (!project) throw new Error('project not found')
-        await prisma.project.deleteMany({
+        await prisma.client.deleteMany({
             where: {
                 tenantId: user.tenant.id,
                 id: project.id
@@ -80,6 +80,11 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
                 </Dialog>
             </div>
             <h3>{project.name}</h3>
+            <div className='container flex gap-4 items-center justify-center'>
+                <h3 className="text-md font-medium">Client: </h3>
+                <p>{project.client?.name}</p>
+
+            </div>
         </div>
     )
 
