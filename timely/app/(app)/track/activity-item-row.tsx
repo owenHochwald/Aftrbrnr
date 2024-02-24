@@ -5,7 +5,7 @@ import { formatDuration } from 'date-fns'
 
 import { Input } from "@/components/ui/input"
 import { pad } from '@/lib/utils'
-import { Activity } from "@prisma/client"
+import { Activity, Project } from "@prisma/client"
 import { useState } from "react"
 import { ArrowRight, CalendarIcon } from "lucide-react"
 import { updateActivity, deleteActivity } from "./actions"
@@ -16,6 +16,8 @@ import {
     PopoverTrigger
 } from "@/components/ui/popover"
 import { Badge } from "@/components/ui/badge"
+import { getUserSession } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 
 type Props = {
     activity: Activity
@@ -26,6 +28,8 @@ type EditDateTimeprops = {
     value: Date
     onChange?: (value: Date) => void
 }
+
+
 
 const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
     const [date, setDate] = useState(value)
@@ -94,7 +98,7 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                     defaultValue={activity.name || ''}
                 />
                 <EditDateTime name="startAt" value={activity.startAt}/>
-                <EditDateTime name="endAt" value={activity.endAt || new Date()}/>
+                <EditDateTime name="endAt" value={activity.endAt || new Date()}/>                
                 <span className="flex-grow"/>
                 <Button type="submit">Save</Button>
             </form>
@@ -111,7 +115,7 @@ type ReadItemRowProps = Props & {
 const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
     return (
         <li className='py-3 space-x-5 flex items-center'>
-            <span className="text-md font-medium w-1/4">{activity.name}</span>
+            <span className="text-md font-medium w-1/4">{activity.name || 'Unnamed Task'}</span>
             <span>
                 {new Intl.DateTimeFormat(undefined, {
                     hour: 'numeric',
@@ -137,10 +141,10 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
 export const ActivityItemRow = ({ activity }: Props) => {
     const [isEditing, setIsEditing] = useState(false)
     return isEditing ? (
-        <EditItemRow activity={activity} onSave={() => setIsEditing(false)} />
+        <EditItemRow activity={activity}  onSave={() => setIsEditing(false)} />
     ) : (
         <>
-            <ReadItemRow activity={activity} edit= { () => setIsEditing(true)} onDelete={ deleteActivity }/>
+            <ReadItemRow activity={activity}  edit= { () => setIsEditing(true)} onDelete={ deleteActivity }/>
         </>
     )
 }

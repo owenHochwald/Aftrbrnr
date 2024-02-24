@@ -23,14 +23,12 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
     })
 
 
-    if (!project) {
-        throw notFound()
-    }
+
 
     async function deleteProject() {
         'use server'
         if (!project) throw new Error('project not found')
-        await prisma.client.deleteMany({
+        await prisma.project.deleteMany({
             where: {
                 tenantId: user.tenant.id,
                 id: project.id
@@ -38,6 +36,10 @@ export default async function ProjectDetailPage({ params }: { params: { id: stri
         })
         revalidatePath('/projects')
         redirect('/projects')
+    }
+
+    if (!project) {
+        throw notFound()
     }
 
     return (
