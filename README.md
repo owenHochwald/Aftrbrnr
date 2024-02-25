@@ -25,3 +25,4 @@ References:
 (React Documentation)[https://react.dev/learn]
 (Rest API with Spring)[https://spring.io/guides/tutorials/rest/]
 (Time Tracking Saas Code Along)[https://www.youtube.com/watch?v=2tVIKvg4hkE]
+[Notion](https://www.notion.so/)

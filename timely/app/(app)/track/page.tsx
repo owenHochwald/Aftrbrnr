@@ -1,13 +1,13 @@
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { prisma } from "@/lib/prisma"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
 import { getUserSession } from "@/lib/auth"
+import { prisma } from "@/lib/prisma"
 import { Activity, Client, Project } from "@prisma/client"
+import { Hammer, UserRound } from "lucide-react"
 import { revalidatePath } from "next/cache"
-import { ActivityDuration } from "./duration"
-import { ArrowRight, Database, Hammer, UserRound } from "lucide-react"
 import { ActivityItemRow } from "./activity-item-row"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { ActivityDuration } from "./duration"
 
 type TimeProps = {
     startAt: string
@@ -29,26 +29,28 @@ type NewActivityProps = {
 
 
 const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
-    async function startActivity(data: FormData) {
+    async function upsertActivity(data: FormData) {
         'use server'
         const user = await getUserSession()
+        const client = data.get('client') as string
+        const project = data.get('project') as string
 
-        const activity = await prisma.activity.create({
-            data: {
+        await prisma.activity.upsert({
+            where: {
+                id: data.get('id') as string
+            },
+            create: {
                 user: { connect: { id: user.id } },
                 tenant: { connect: { id: user.tenant.id } },
                 name: data.get('name') as string,
                 startAt: new Date(),
-                client: {
-                    connect: {
-                        id: data.get('client') as string ?? undefined
-                    }
-                },
-                project: {
-                    connect: {
-                        id: data.get('project') as string ?? undefined
-                    }
-                }
+                client: !!client ? {connect: { id: client }} : undefined,
+                project: !!project ? {connect: { id: project }} : undefined
+            },
+            update: {
+                name: data.get('name') as string,
+                client: !!client ? {connect: { id: client }} : undefined,
+                project: !!project ? {connect: { id: project }} : undefined
             }
         })
 
@@ -57,12 +59,18 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
 
     async function stopActivity(data: FormData) {
         'use server'
+        const client = data.get('client') as string
+        const project = data.get('project') as string
+        
         await prisma.activity.update({
             where: {
                 id: data.get('id') as string
             },
             data: {
-                endAt: new Date()
+                endAt: new Date(),
+                name: data.get('name') as string,
+                client: !!client ? {connect: { id: client }} : undefined,
+                project: !!project ? {connect: { id: project }} : undefined
             }
         })
         revalidatePath('/track')
@@ -71,7 +79,7 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
     return (
         <div>
             <h2 className="text-lg mb-2 font-semibold">What are you working on?</h2>
-            <form action={activity ? stopActivity : startActivity}>
+            <form action={activity ? stopActivity : upsertActivity}>
                 <div className="flex items-center space-x-4">
                     <Input type="text" name="name" defaultValue={activity?.name || ""} />
                     <input type="hidden" name="id" defaultValue={activity?.id || ""} />
