@@ -11,7 +11,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Link from 'next/link'
-import { LogOut } from 'lucide-react'
+import { BookOpen, Box, LogOut, PaintBucket, Settings, UserRound } from 'lucide-react'
 import { Logout } from './logout'
 
 
@@ -30,16 +30,37 @@ export const Avatar = ({ user }: { user: Session['user'] }) => (
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/admin/profile">Profile</Link>
+                <a href="/admin/profile">
+                    <Settings className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
+                    Profile Settings
+                </a>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/admin/settings">Settings</Link>
+                <a href="/admin/team">
+                    <UserRound className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
+                    Team
+                </a>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/admin/about">About</Link>
+                <a href="/admin/appearance">
+                    <PaintBucket className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
+                    Appearance
+                </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="w-full cursor-pointer" asChild>
+                <a href="/admin/integrations">
+                    <Box className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
+                    Integrations
+                </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="w-full cursor-pointer" asChild>
+                <a href="/admin/about">
+                    <BookOpen className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
+                    About
+                </a>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <Logout/>
+            <Logout />
         </DropdownMenuContent>
     </DropdownMenu>
 )

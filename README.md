@@ -2,9 +2,9 @@
 
 ## Features
  - [X] Time Tracking by Activity
- - [ ] Clients
- - [ ] Projects
- - [ ] Organizations associated with projects / activities
+ - [X] Clients
+ - [X] Projects
+ - [X] Organizations associated with projects / activities
  - [X] Authentication
  - [X] Data Model
  - [X] Create Tickets
@@ -15,7 +15,9 @@
  - [ ] Invoice / Exportable Version of Hours
  - [ ] Custom Timers
  - [ ] Add accomplishments by day in a bar chart by day
- - [ ] Make create page as a general component
+ - [X] Make create page as a general component
+ - [X] Add icons
+ - [ ] Modified schema to allow custome image uploads for pfps
 
 
 

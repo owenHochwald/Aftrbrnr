@@ -6,7 +6,9 @@ import { SidebarListItem } from './sidebar-list-item'
 
 const links = [
     { href: "/admin/profile", label: "Profile" },
-    { href: "/admin/settings", label: "Settings" },
+    { href: "/admin/team", label: "Team" },
+    { href: "/admin/appearance", label: "Appearance" },
+    { href: "/admin/integrations", label: "Integrations" },
     { href: "/admin/about", label: "About" },
 ]
 

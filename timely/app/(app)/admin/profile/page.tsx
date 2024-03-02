@@ -9,7 +9,7 @@ export default async function ProfilePage() {
 
     return (
         <div>
-            <h1 className='text-2xl font-medium mb-8'>Profile</h1>
+            <h1 className='text-2xl font-medium mb-8'>Profile Settings</h1>
             <span className="block" />
             <div className="flex">
                 <div className="flex-grow flex-col flex gap-3">
