@@ -30,19 +30,16 @@ export const Avatar = ({ user }: { user: Session['user'] }) => (
             </div>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/profile">Profile</Link>
+                <Link href="/admin/profile">Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/settings">Settings</Link>
+                <Link href="/admin/settings">Settings</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
-                <Link href="/about">About</Link>
+                <Link href="/admin/about">About</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <Logout/>
         </DropdownMenuContent>
     </DropdownMenu>
-
-
-
 )
