@@ -1,6 +1,7 @@
 import { getUserSession } from '@/lib/auth'
 import Link from 'next/link'
 import { Avatar } from './avatar'
+import ThemeSwitch from './switch-theme'
 
 const links = [
     {href: "/track", label: "Track"},
@@ -14,7 +15,7 @@ export async function NavBar () {
         <div className="shadow">
             <div className="container nx-auto flex items-center py-2 space-x-6">
                 <Link href="/" className='py-2 px-2 hover:bg-slate-100 rounded'>
-                    <span className="font-bold">Timely</span>
+                    <span className="font-bold">Aftrbrnr</span>
                 </Link>
                 <nav>
                     <ul className='flex items-center gap-4'>
@@ -32,6 +33,7 @@ export async function NavBar () {
                     </ul>
                 </nav>
                 <span className="flex-grow"/>
+                <ThemeSwitch/>
                 <Avatar user={user}/>
             </div>
         </div>

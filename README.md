@@ -1,4 +1,4 @@
-# Timely Time Tracking SaaS
+# Aftrbrnr Time Tracking SaaS
 
 ## Features
  - [X] Time Tracking by Activity

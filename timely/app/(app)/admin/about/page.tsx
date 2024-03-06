@@ -77,7 +77,7 @@ export default async function AboutPage() {
                                 <a href="mailto:support@example.com">support@example.com</a>
                             </HoverCardTrigger>
                             <HoverCardContent>
-                                Support for all your needs! Created and maintained by @timely.
+                                Support for all your needs! Created and maintained by @aftrbrnr.
                             </HoverCardContent>
                         </HoverCard>
 
@@ -89,7 +89,7 @@ export default async function AboutPage() {
                                 <a href="tel:+1234567890">+1 (234) 567-890</a>
                             </HoverCardTrigger>
                             <HoverCardContent>
-                                Support for all your needs! Created and maintained by @timely.
+                                Support for all your needs! Created and maintained by @aftrbrnr.
                             </HoverCardContent>
                         </HoverCard>
 

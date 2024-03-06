@@ -5,8 +5,8 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Timely Time Tracking',
-  description: 'Track your time with Timely.',
+  title: 'Aftrbrnr Time Tracking',
+  description: 'Track your time with Aftrbrnr.',
 }
 
 export default function RootLayout({
@@ -16,7 +16,9 @@ export default function RootLayout({
 }) {
   return (
     <html className="h-full" lang="en">
-      <body className={'${inter.className} h-full'}>{children}</body>
+      <body className={'${inter.className} h-full'}>
+          {children}
+      </body>
     </html>
   )
 }
