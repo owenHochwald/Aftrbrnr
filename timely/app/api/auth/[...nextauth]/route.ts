@@ -12,7 +12,7 @@ const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID! as string
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET! as string
 
 
-export const options: NextAuthOptions = {
+export const authOptions : NextAuthOptions = {
     session: {
       strategy: 'jwt',
     },
@@ -77,5 +77,5 @@ export const options: NextAuthOptions = {
     }
   }
 
-const handler = NextAuth(options)
+const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }
