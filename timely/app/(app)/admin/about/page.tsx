@@ -47,8 +47,8 @@ export default async function AboutPage() {
                     {/* Testimonial 1 */}
                     <div className="p-4 border rounded-md shadow-md">
                         <p className="text-lg leading-relaxed font-light">
-                            "This time tracking system is a game-changer! It helps me stay
-                            organized and accountable, leading to increased productivity."
+                            This time tracking system is a game-changer! It helps me stay
+                            organized and accountable, leading to increased productivity.
                         </p>
                         <p className="text-sm font-medium mt-2">
                             - Sarah Lee, Marketing Manager
@@ -58,9 +58,9 @@ export default async function AboutPage() {
                     {/* Testimonial 2 */}
                     <div className="p-4 border rounded-md shadow-md">
                         <p className="text-lg leading-relaxed font-light">
-                            "The user interface is intuitive and easy to navigate. I highly
+                            The user interface is intuitive and easy to navigate. I highly
                             recommend this platform for anyone looking to improve their time
-                            management skills."
+                            management skills.
                         </p>
                         <p className="text-sm font-medium mt-2">
                             - Michael Jones, Project Manager
