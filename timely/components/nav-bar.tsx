@@ -10,6 +10,8 @@ const links = [
 ]
 
 export async function NavBar () {
+    // const  {user, isLoaded} userUser();
+
     const user = await getUserSession()
     return (
         <div className="shadow">
