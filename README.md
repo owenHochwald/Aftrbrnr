@@ -1,4 +1,7 @@
-# Aftrbrnr Time Tracking SaaS
+# Aftrbrnr - End to End Time Tracking SaaS
+
+
+(crl-k v to view preview)
 
 ## Features
  - [X] Time Tracking by Activity
@@ -18,13 +21,14 @@
  - [X] Make create page as a general component
  - [X] Add icons
  - [ ] Modified schema to allow custome image uploads for pfps
+ - [ ] Email verification for team joining
+ - [ ] Toggle for work / personal pages
+ - [ ] Stats
+ - [ ] Create different accounts types - update database
 
 
 
-
-References: 
-(React.js and Spring Data)[https://spring.io/guides/tutorials/react-and-spring-data-rest/]
-(React Documentation)[https://react.dev/learn]
-(Rest API with Spring)[https://spring.io/guides/tutorials/rest/]
-(Time Tracking Saas Code Along)[https://www.youtube.com/watch?v=2tVIKvg4hkE]
-[Notion](https://www.notion.so/)
+### References: 
+- [NextJS Docs](https://nextjs.org/docs)
+- [Time Tracking Saas Code Along](https://www.youtube.com/watch?v=2tVIKvg4hkE)
+- [Notion](https://www.notion.so/)

@@ -16,7 +16,8 @@ export default async function AboutPage() {
             </Head>
             <div className="max-w-2xl mx-auto">
                 {/* Hero Section */}
-                <h1 className="text-4xl font-bold mb-8">About Us</h1>
+                <h1 className="text-4xl font-bold mb-8">About Us:</h1>
+                <h1 className="text-4xl font-bold mb-8">Aftrbrnr - Ignite Your Time Tracking</h1>
                 {/* Mission and Values Section */}
                 <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {/* Mission */}
