@@ -9,7 +9,7 @@ const links = [
     {href: "/projects", label: "Projects"},
 ]
 
-export async function NavBar () {
+export async function SignedInNavBar () {
     // const  {user, isLoaded} userUser();
 
     const user = await getUserSession()

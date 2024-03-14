@@ -21,6 +21,7 @@ model Tenant {
   name       String?
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  inviteKey  String     @unique @default(dbgenerated("replace(cast(gen_random_uuid() as text), '-', '')")) @db.Text
   users      User[]
   activities Activity[]
   clients    Client[]
