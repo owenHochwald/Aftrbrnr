@@ -8,6 +8,14 @@ datasource db {
   url      = env("DATABASE_PRISMA_URL") // production environment
 }
 
+enum Role {
+  OWNER
+  ADMIN
+  USER
+  TRACKER
+  VIEWER
+}
+
 model Tenant {
   id         String     @id @default(dbgenerated("concat('tnt_', replace(cast(gen_random_uuid() as text), '-', ''))")) @db.Text
   name       String?
@@ -24,6 +32,7 @@ model User {
   email      String     @unique
   name       String?
   avatar     String?
+  role       Role       @default(OWNER)
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
   tenantId   String     @db.Text

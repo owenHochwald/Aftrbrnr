@@ -25,6 +25,7 @@
  - [ ] Toggle for work / personal pages
  - [ ] Stats
  - [ ] Create different accounts types - update database
+ - [ ] Invoice Page
 
 
 

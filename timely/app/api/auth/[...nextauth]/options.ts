@@ -40,6 +40,7 @@ export const options : NextAuthOptions = {
             email: profile.email,
             name: profile.name,
             avatar: (profile as any).picture,
+            role: 'OWNER',
             tenant: {
               create: {}
             }

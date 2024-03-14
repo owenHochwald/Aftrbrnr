@@ -7,7 +7,7 @@ TimePilot
 
 Taskticker
 
-tickytask
+- tickytask
 
 Procrastination pounder
 
@@ -15,8 +15,8 @@ timeturner
 
 afterburner
 
-Antealchemist
+- Ante_alchemist
 
-aftrburnr
+- aftrburnr
 
 aftrbrnr
