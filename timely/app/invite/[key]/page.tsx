@@ -1,26 +1,3 @@
-// import { getUserSession } from "@/lib/auth"
-// import { prisma } from "@/lib/prisma"
-
-// export default async function AcceptInvitePage() {
-//     const user = await getUserSession()
-//     const tenant = await prisma.tenant.findUnique({
-//         where: {
-//             id: user.tenant.id
-//         }
-//     })
-
-//     return (
-//         // <div>
-//         //     <h1>Accept Invite</h1>
-//         // </div>
-//         <main>
-//             <h1>Accept Invite</h1>
-
-//         </main>
-//     )
-// }
-
-
 import { Button } from '@/components/ui/button'
 import { prisma } from '@/lib/prisma'
 import { cookies } from 'next/headers'
