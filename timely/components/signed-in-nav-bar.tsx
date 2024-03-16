@@ -5,6 +5,7 @@ import ThemeSwitch from './switch-theme'
 
 const links = [
     {href: "/track", label: "Track"},
+    {href: "/analytics", label: "Analytics"},
     {href: "/clients", label: "Clients"},
     {href: "/projects", label: "Projects"},
 ]
