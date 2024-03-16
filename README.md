@@ -21,11 +21,11 @@
  - [X] Make create page as a general component
  - [X] Add icons
  - [ ] Modified schema to allow custome image uploads for pfps
- - [ ] Email verification for team joining
  - [ ] Toggle for work / personal pages
  - [ ] Stats
  - [ ] Create different accounts types - update database
  - [ ] Invoice Page
+ - [ ] Make (auth) a seperate directory that doesn't require authentication
 
 
 
