@@ -1,4 +1,4 @@
-import { Session, getServerSession } from "next-auth"
+import { Session, User, getServerSession } from "next-auth"
 import { JWT } from "next-auth/jwt"
 
 
@@ -8,7 +8,7 @@ export const session = async ({ session, token }: any) => {
     return session
 }
 
-export const getUserSession = async() => {
+export const getUserSession = async(): Promise<User> => {
     const authUserSession = await getServerSession({
         callbacks: {
             session

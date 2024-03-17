@@ -26,6 +26,7 @@
  - [ ] Create different accounts types - update database
  - [ ] Invoice Page
  - [ ] Make (auth) a seperate directory that doesn't require authentication
+ - [ ] Update edit row items with clients and projects
 
 
 

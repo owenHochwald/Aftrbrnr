@@ -82,6 +82,7 @@ type EditRowProps = Props & {
 }
 
 const EditItemRow = ({ activity, onSave }: EditRowProps) => {
+    // add a const user = await getUserSession() -> update the project and client with this new data
     return (
         <li className='py-5'>
             <form action={async (data) => {
@@ -132,7 +133,7 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
             <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
             <span className='flex-grow'/>
             <Button onClick={edit}>Edit</Button>
-            <Button onClick={ async () => onDelete(activity.id)} className="ml-2" variant="outline">Delete</Button>
+            <Button onClick={ async () => onDelete(activity.id)} className="ml-2 hover:bg-red-600" variant="outline">Delete</Button>
         </li>
     )
 }
