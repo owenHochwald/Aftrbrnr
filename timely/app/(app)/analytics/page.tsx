@@ -1,7 +1,11 @@
+// import React, { useState } from 'react';
 import { getUserSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { getDuration } from "@/lib/time"
-import { EditDate } from "./edit-date"
+import { DatePickerWithRange } from "./edit-date"
+import { Button } from "@/components/ui/button"
+import { revalidatePath } from "next/cache"
+import { redirect } from "next/navigation"
 
 
 type Props = {
@@ -12,12 +16,14 @@ type Props = {
 }
 
 const getDates = (from: string, to: string) => {
-    // default to startOfWeek --> assuming week starts on Monday
+    // default to startOfWeek --> assuming week starts on Sunday
     // unit tests
-    const startOfWeek = new Date(new Date().setDate(new Date().getDate() - (new Date().getDay() + 6) % 7)).toISOString()
-    const endOfWeek = new Date(new Date().setDate(new Date().getDate() + (7 - new Date().getDay()))).toISOString()
-
-
+    const startOfWeek = new Date(
+        new Date().setDate(new Date().getDate() - new Date().getDay())
+    ).toISOString()
+    const endOfWeek = new Date(
+        new Date().setDate(new Date().getDate() - new Date().getDay() + 6)
+    ).toISOString()
 
     const fromDate = new Date(from || startOfWeek)
 
@@ -31,6 +37,10 @@ const getDates = (from: string, to: string) => {
     if (fromDate > toDate) {
         throw new Error("Invalid 'from' date, 'to' date must be after 'from' date.")
     }
+
+    fromDate.setHours(0, 0, 0, 0)
+    toDate.setHours(23, 59, 59, 999)
+
     return {
         from: fromDate,
         to: toDate
@@ -39,8 +49,9 @@ const getDates = (from: string, to: string) => {
 
 
 export default async function AnalyticsPage({ searchParams: { from: fromUnparsed, to: toUnparsed } }: Props) {
-
     const { from, to, } = getDates(fromUnparsed, toUnparsed)
+    // const [formSubmitted, setFormSubmitted] = useState(false);
+
 
     const user = await getUserSession()
     const activites = await prisma.activity.findMany({
@@ -59,34 +70,31 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
             }
         }
     })
+    async function reload(data: FormData) {
+        'use server'
+        revalidatePath('/analytics')
+        redirect(`/analytics?from=${data.get('from')}&to=${data.get('to')}`)
+    }
+
 
     return (
         <div className="mx-auto container py-4">
             <h1 className="text-lg font-medium mb-2">Analytics</h1>
             <form className="flex items-center gap-4">
-                <div className="border rounded-md flex items-center gap-2 px-2">
-                    <label htmlFor="from">From</label>
-                    <EditDate name="from" date={from} bounds="start" />
-                </div>
-                <div className="border rounded-md flex items-center gap-2 px-2">
-                    <label htmlFor="to">To</label>
-                    <EditDate name="to" date={to} bounds="end" />
-                </div>
+                <DatePickerWithRange to={to} from={from} />
+                <Button type="submit">Submit</Button>
             </form>
 
-            {
-                activites.length > 0 && (
-                    <ul className="divide-y">
-                        {
-                            activites.map(activity => (
-                                <li key={activity.id} className="py-2">
-                                    {activity.name} - {getDuration(activity.startAt, activity.endAt || new Date())}
-                                </li>
-                            ))}
-                    </ul>
-                )
-            }
-
+            {activites.length > 0 && (
+                <ul className="divide-y">
+                    {
+                        activites.map(activity => (
+                            <li key={activity.id} className="py-2">
+                                {activity.name} - {getDuration(activity.startAt, activity.endAt || new Date())}
+                            </li>
+                        ))}
+                </ul>
+            )}
         </div>
     )
 }
