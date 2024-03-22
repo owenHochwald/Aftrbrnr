@@ -30,7 +30,7 @@ export default async function ProfilePage() {
                 </div>
                 <div className="w-1/5">
                     <h1 className="text-md font-medium mb-2">Picture</h1>
-                    <Image alt="Profile picture" src={user.image} width={100} height={100} className="rounded-full" />
+                    <Image alt="Profile picture" src={user.image || ''} width={100} height={100} className="rounded-full" />
                     <span className="text-neutral-600">
                         <a href="https://myaccount.google.com/personal-info?hl=en" target="_blank"> Edit profile picture on Google here.</a>
                     </span>

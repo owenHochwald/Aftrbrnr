@@ -145,13 +145,13 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                 <ul className="">
                     {clients.map(client => (
                         <li key={client.id} className="py-2">
-                            
+
                             <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
 
                             {client.activities.map(activity => (
                                 <li key={activity.id} className="py-2">
                                     {activity.name} - {' '}
-                                     {getDuration(activity.startAt, activity.endAt || new Date())}
+                                    {getDuration(activity.startAt, activity.endAt || new Date())}
                                 </li>
                             ))}
                         </li>
