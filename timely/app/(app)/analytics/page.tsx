@@ -54,22 +54,67 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
 
 
     const user = await getUserSession()
-    const activites = await prisma.activity.findMany({
+    // const activites = await prisma.activity.findMany({
+    //     where: {
+    //         //  ALL activites the TENANT has done, not the user
+    //         // this means that if many people share a tenant ID,
+    //         // all their activites will be shown, rather than it individual
+
+    //         // can make it based on role in future
+
+    //         // make sure i have validation for these queries
+    //         tenantId: user.tenant.id,
+    //         startAt: {
+    //             gte: from,
+    //             lte: to
+    //         }
+    //     },
+    //     include: {
+    //         client: true
+    //     }
+    // })
+    const clients = await prisma.client.findMany({
         where: {
-            //  ALL activites the TENANT has done, not the user
-            // this means that if many people share a tenant ID,
-            // all their activites will be shown, rather than it individual
-
-            // can make it based on role in future
-
-            // make sure i have validation for these queries
             tenantId: user.tenant.id,
+            activities: {
+                some: {
+                    startAt: {
+                        gte: from,
+                    },
+                    endAt: {
+                        lte: to,
+                    },
+                },
+            },
+        },
+        include: {
+            activities: {
+                where: {
+                    startAt: {
+                        gte: from,
+                    },
+                    endAt: {
+                        lte: to,
+                    },
+                },
+            },
+        },
+    })
+
+    const nullClientActivities = await prisma.activity.findMany({
+        where: {
+            tenantId: user.tenant.id,
+            clientId: null,
             startAt: {
                 gte: from,
-                lte: to
-            }
-        }
+            },
+            endAt: {
+                lte: to,
+            },
+        },
     })
+
+
     async function reload(data: FormData) {
         'use server'
         revalidatePath('/analytics')
@@ -84,15 +129,33 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                 <DatePickerWithRange to={to} from={from} />
                 <Button type="submit">Submit</Button>
             </form>
-
-            {activites.length > 0 && (
-                <ul className="divide-y">
-                    {
-                        activites.map(activity => (
+            {nullClientActivities.length > 0 && (
+                <div>
+                    <h2 className="text-lg font-bold space-y-3">No client</h2>
+                    <ul className="divide-y">
+                        {nullClientActivities.map(activity => (
                             <li key={activity.id} className="py-2">
                                 {activity.name} - {getDuration(activity.startAt, activity.endAt || new Date())}
                             </li>
                         ))}
+                    </ul>
+                </div>
+            )}
+            {clients.length > 0 && (
+                <ul className="">
+                    {clients.map(client => (
+                        <li key={client.id} className="py-2">
+                            
+                            <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
+
+                            {client.activities.map(activity => (
+                                <li key={activity.id} className="py-2">
+                                    {activity.name} - {' '}
+                                     {getDuration(activity.startAt, activity.endAt || new Date())}
+                                </li>
+                            ))}
+                        </li>
+                    ))}
                 </ul>
             )}
         </div>

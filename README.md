@@ -27,6 +27,7 @@
  - [ ] Invoice Page
  - [ ] Make (auth) a seperate directory that doesn't require authentication
  - [ ] Update edit row items with clients and projects
+ - [ ] Make analytics have options by clients, projects, user
 
 
 
