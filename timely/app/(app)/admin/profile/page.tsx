@@ -14,7 +14,7 @@ export default async function ProfilePage() {
             <div className="flex">
                 <div className="flex-grow flex-col flex gap-3">
                     <h1 className="text-xl font-medium">Details</h1>
-                    <div>
+                    <div> 
                         <div className="font-semibold">Name</div>
                         <div>{user.name}</div>
                     </div>
