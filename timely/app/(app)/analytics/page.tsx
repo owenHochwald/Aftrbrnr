@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { Card, Title } from "@tremor/react"
-import { ActivityChart, ClientChart } from "./chart"
+import { ActivityBarChart, ActivityDonutChart, ClientChart } from "./chart"
 import { Activity } from "@prisma/client"
 
 
@@ -194,13 +194,12 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                         colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
                         className="max-w-xs"
                     /> */}
-
                 </Card>
                 <Card className="max-w-lg">
                     <Title>Activity Breakdown</Title>
-                    <ActivityChart data={Object.entries(activityChartData).map(([name, duration]) => ({
+                    <ActivityDonutChart data={Object.entries(activityChartData).map(([name, duration]) => ({
                         name,
-                        duration: duration / 1000 / 60 / 60 
+                        duration: duration / 1000 / 60 / 60
                     }))}
                     />
                     {/* <Legend
@@ -208,7 +207,19 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                         colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
                         className="max-w-xs"
                     /> */}
-
+                </Card>
+                <Card className="max-w-lg">
+                    <Title>Activity Breakdown</Title>
+                    <ActivityBarChart data={Object.entries(activityChartData).map(([name, duration]) => ({
+                        name,
+                        duration: duration / 1000 / 60 / 60
+                    }))}
+                    />
+                    {/* <Legend
+                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
+                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
+                        className="max-w-xs"
+                    /> */}
                 </Card>
             </div>
         </div>

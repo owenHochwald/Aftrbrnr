@@ -1,6 +1,6 @@
 'use client'
 
-import { DonutChart } from '@tremor/react'
+import { BarChart, DonutChart } from '@tremor/react'
 
 type ChartProps = {
     data: any[]
@@ -21,7 +21,7 @@ export const ClientChart = ({ data }: ChartProps) => {
     )
 }
 
-export const ActivityChart = ({ data }: ChartProps) => {
+export const ActivityDonutChart = ({ data }: ChartProps) => {
     return (
         <DonutChart
             className="mt-6"
@@ -31,5 +31,20 @@ export const ActivityChart = ({ data }: ChartProps) => {
             valueFormatter={hourFormatter}
             colors={['slate', 'violet', 'indigo', 'rose', 'cyan', 'amber']}
         />
+    )
+}
+
+export const ActivityBarChart = ({ data }: ChartProps) => {
+    return (
+        <BarChart
+        data={data}
+        index="name"
+        categories= {["duration"]}
+        colors={['indigo', 'rose', 'cyan', 'amber']}
+        valueFormatter={hourFormatter}
+        yAxisWidth={48}
+        // onValueChange={(v) => console.log(v)}
+        showXAxis={false}
+      />
     )
 }
