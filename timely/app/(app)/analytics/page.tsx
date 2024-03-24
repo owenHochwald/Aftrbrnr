@@ -1,11 +1,13 @@
-// import React, { useState } from 'react';
 import { getUserSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { getDuration } from "@/lib/time"
+import { getDuration, getDurationInMilliseconds } from "@/lib/time"
 import { DatePickerWithRange } from "./edit-date"
 import { Button } from "@/components/ui/button"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
+import { Card, Title } from "@tremor/react"
+import { ActivityChart, ClientChart } from "./chart"
+import { Activity } from "@prisma/client"
 
 
 type Props = {
@@ -15,9 +17,15 @@ type Props = {
     }
 }
 
+const totalActivitiesDuration = (activites: Activity[]) =>
+    activites.reduce(
+        (total, activity) =>
+            (activity.endAt || new Date()).getTime() -
+            activity.startAt.getTime(),
+        0
+    ) / 1000 / 60 / 60
+
 const getDates = (from: string, to: string) => {
-    // default to startOfWeek --> assuming week starts on Sunday
-    // unit tests
     const startOfWeek = new Date(
         new Date().setDate(new Date().getDate() - new Date().getDay())
     ).toISOString()
@@ -47,13 +55,12 @@ const getDates = (from: string, to: string) => {
     }
 }
 
-
 export default async function AnalyticsPage({ searchParams: { from: fromUnparsed, to: toUnparsed } }: Props) {
-    const { from, to, } = getDates(fromUnparsed, toUnparsed)
-    // const [formSubmitted, setFormSubmitted] = useState(false);
-
-
-    const user = await getUserSession()
+    async function reload(data: FormData) {
+        'use server'
+        revalidatePath('/analytics')
+        redirect(`/analytics?from=${data.get('from')}&to=${data.get('to')}`)
+    }
     // const activites = await prisma.activity.findMany({
     //     where: {
     //         //  ALL activites the TENANT has done, not the user
@@ -73,6 +80,10 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
     //         client: true
     //     }
     // })
+
+    const { from, to, } = getDates(fromUnparsed, toUnparsed)
+    const user = await getUserSession()
+
     const clients = await prisma.client.findMany({
         where: {
             tenantId: user.tenant.id,
@@ -114,50 +125,92 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
         },
     })
 
+    const clientData = [
+        {
+            name: 'No Client',
+            duration: totalActivitiesDuration(nullClientActivities)
+        },
 
-    async function reload(data: FormData) {
-        'use server'
-        revalidatePath('/analytics')
-        redirect(`/analytics?from=${data.get('from')}&to=${data.get('to')}`)
-    }
+        ...clients.map((client) => ({
+            name: client.name,
+            duration: totalActivitiesDuration(client.activities)
+        }))
+    ]
 
+    const activityChartData: Record<string, number> = {}
+        ;[...nullClientActivities, ...clients.flatMap(client => client.activities)].forEach(activity => {
+            const key = activity.name || '(No Name)'
+            const ms = activityChartData[key] || 0
+            activityChartData[key]
+                = ms +
+                getDurationInMilliseconds(activity.startAt, activity.endAt || new Date())
+        })
 
     return (
-        <div className="mx-auto container py-4">
-            <h1 className="text-lg font-medium mb-2">Analytics</h1>
-            <form className="flex items-center gap-4">
-                <DatePickerWithRange to={to} from={from} />
-                <Button type="submit">Submit</Button>
-            </form>
-            {nullClientActivities.length > 0 && (
-                <div>
-                    <h2 className="text-lg font-bold space-y-3">No client</h2>
-                    <ul className="divide-y">
-                        {nullClientActivities.map(activity => (
-                            <li key={activity.id} className="py-2">
-                                {activity.name} - {getDuration(activity.startAt, activity.endAt || new Date())}
+        <div className="mx-auto container py-4 grid grid-cols-2">
+            <div className="space-y-4">
+                <h1 className="text-lg font-medium mb-2">Analytics</h1>
+                <form action={reload} className="flex items-center gap-4">
+                    <DatePickerWithRange to={to} from={from} />
+                    <Button type="submit">Submit</Button>
+                </form>
+                {nullClientActivities.length > 0 && (
+                    <div>
+                        <h2 className="text-lg font-bold space-y-3">No client</h2>
+                        <ul className="divide-y">
+                            {nullClientActivities.map(activity => (
+                                <li key={activity.id} className="py-2">
+                                    {activity.name} - {getDuration(activity.startAt, activity.endAt || new Date())}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+                {clients.length > 0 && (
+                    <ul className="">
+                        {clients.map((client) => (
+                            <li key={client.id} className="py-2">
+
+                                <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
+
+                                {client.activities.map((activity) => (
+                                    <li key={activity.id} className="py-2">
+                                        {activity.name} - {' '}
+                                        {getDuration(activity.startAt, activity.endAt || new Date())}
+                                    </li>
+                                ))}
                             </li>
                         ))}
                     </ul>
-                </div>
-            )}
-            {clients.length > 0 && (
-                <ul className="">
-                    {clients.map(client => (
-                        <li key={client.id} className="py-2">
+                )}
+            </div>
+            <div className="space-y-4">
+                <h2>Charts</h2>
+                <Card className="max-w-lg">
+                    <Title>Client Breakdown</Title>
+                    <ClientChart data={clientData} />
+                    {/* <Legend
+                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
+                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
+                        className="max-w-xs"
+                    /> */}
 
-                            <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
+                </Card>
+                <Card className="max-w-lg">
+                    <Title>Activity Breakdown</Title>
+                    <ActivityChart data={Object.entries(activityChartData).map(([name, duration]) => ({
+                        name,
+                        duration: duration / 1000 / 60 / 60 
+                    }))}
+                    />
+                    {/* <Legend
+                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
+                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
+                        className="max-w-xs"
+                    /> */}
 
-                            {client.activities.map(activity => (
-                                <li key={activity.id} className="py-2">
-                                    {activity.name} - {' '}
-                                    {getDuration(activity.startAt, activity.endAt || new Date())}
-                                </li>
-                            ))}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                </Card>
+            </div>
         </div>
     )
 }
