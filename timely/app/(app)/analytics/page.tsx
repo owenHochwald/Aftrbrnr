@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 import { Card, Title } from "@tremor/react"
-import { ActivityBarChart, ActivityDonutChart, ClientChart } from "./chart"
+import { ActivityBarChart, ActivityDonutChart, ClientDonutChart, SwitchActivityChart, SwitchClientChart } from "./chart"
 import { Activity } from "@prisma/client"
 
 
@@ -187,39 +187,14 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
             <div className="space-y-4">
                 <h2>Charts</h2>
                 <Card className="max-w-lg">
-                    <Title>Client Breakdown</Title>
-                    <ClientChart data={clientData} />
-                    {/* <Legend
-                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
-                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
-                        className="max-w-xs"
-                    /> */}
+                    <SwitchClientChart data={clientData} />
                 </Card>
                 <Card className="max-w-lg">
-                    <Title>Activity Breakdown</Title>
-                    <ActivityDonutChart data={Object.entries(activityChartData).map(([name, duration]) => ({
+                    <SwitchActivityChart data={Object.entries(activityChartData).map(([name, duration]) => ({
                         name,
                         duration: duration / 1000 / 60 / 60
                     }))}
                     />
-                    {/* <Legend
-                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
-                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
-                        className="max-w-xs"
-                    /> */}
-                </Card>
-                <Card className="max-w-lg">
-                    <Title>Activity Breakdown</Title>
-                    <ActivityBarChart data={Object.entries(activityChartData).map(([name, duration]) => ({
-                        name,
-                        duration: duration / 1000 / 60 / 60
-                    }))}
-                    />
-                    {/* <Legend
-                        categories={['New York', 'London', 'Hong Kong', 'San Francisco', 'Singapore']}
-                        colors={['blue', 'cyan', 'indigo', 'violet', 'fuchsia']}
-                        className="max-w-xs"
-                    /> */}
                 </Card>
             </div>
         </div>
