@@ -147,7 +147,7 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
         })
 
     return (
-        <div className="mx-auto container py-4 grid grid-cols-2">
+        <div className="mx-auto container py-4 grid grid-cols-2 gap-8">
             <div className="space-y-4">
                 <h1 className="text-lg font-medium mb-2">Analytics</h1>
                 <form action={reload} className="flex items-center gap-4">
@@ -156,7 +156,7 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                 </form>
                 {nullClientActivities.length > 0 && (
                     <div>
-                        <h2 className="text-lg font-bold space-y-3">No client</h2>
+                        <h2 className="text-lg font-bold space-y-3 divide-y">No client</h2>
                         <ul className="divide-y">
                             {nullClientActivities.map(activity => (
                                 <li key={activity.id} className="py-2">
@@ -169,17 +169,18 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                 {clients.length > 0 && (
                     <ul className="">
                         {clients.map((client) => (
-                            <li key={client.id} className="py-2">
-
+                            <div>
                                 <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
+                                <li key={client.id} className="py-2 divide-y">
+                                    {client.activities.map((activity) => (
+                                        <li key={activity.id} className="py-2">
+                                            {activity.name} - {' '}
+                                            {getDuration(activity.startAt, activity.endAt || new Date())}
+                                        </li>
+                                    ))}
+                                </li>
+                            </div>
 
-                                {client.activities.map((activity) => (
-                                    <li key={activity.id} className="py-2">
-                                        {activity.name} - {' '}
-                                        {getDuration(activity.startAt, activity.endAt || new Date())}
-                                    </li>
-                                ))}
-                            </li>
                         ))}
                     </ul>
                 )}
