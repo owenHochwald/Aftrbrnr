@@ -1,5 +1,4 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { getUserSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Copy } from "lucide-react"
@@ -7,9 +6,10 @@ import { UpdateRoleForm } from "./update-form"
 import { isAdmin } from "@/lib/authorization"
 import { Role } from "@prisma/client"
 import { getInitials } from "@/lib/utils"
+import { CopyButton } from "@/components/copy-button"
 
 // const DOMAIN = "aftrbrnr.com"
-const DOMAIN = "localhost:3000"
+const DOMAIN = "http://localhost:3000"
 
 
 const InviteLink = async () => {
@@ -19,18 +19,20 @@ const InviteLink = async () => {
             id: user.tenant.id
         }
     })
+    const inviteLink = `${DOMAIN}/invite/${tenant?.inviteKey}`
+
 
     return (
-        <div className="py-4 shadow border-1 px-1 rounded-lg space-y-4">
-            <h2 className="text=center text-xl px-4">Invite Link</h2>
-            <div className="flex py-2 px-4 items-center rounded-xl bg-stone-200">
-                <Copy />
+        <div className="py-4 space-y-4">
+            <h2 className="text-xl font-medium">Invite Link</h2>
+            <div className="flex items-center bg-neutral-200 p-2 rounded-xl">
                 <input
-                    defaultValue={`${DOMAIN}/invite/${tenant?.inviteKey}`}
-                    className="flex-grow mr-4 bg-stone-200 border-0"
-                    disabled
+                    defaultValue={inviteLink}
+                    className="py-2 px-4 w-full bg-transparent border border-gray-300 rounded-xl border-0"
                     readOnly
                 />
+                <CopyButton text={inviteLink}/>
+
             </div>
         </div>
     )

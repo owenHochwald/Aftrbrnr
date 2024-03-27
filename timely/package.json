@@ -22,8 +22,10 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-switch": "^1.0.3",
+    "@radix-ui/react-toast": "^1.1.5",
     "@tremor/react": "^3.14.1",
     "class-variance-authority": "^0.7.0",
+    "clipboard-copy": "^4.0.1",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
     "date-fns": "^3.3.1",
@@ -36,6 +38,7 @@
     "react": "^18",
     "react-day-picker": "^8.10.0",
     "react-dom": "^18",
+    "sonner": "^1.4.41",
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7"
   },
