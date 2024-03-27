@@ -1,4 +1,4 @@
-'user client'
+'use client'
 
 import { Session } from 'next-auth'
 import { Avatar as RootAvatar, AvatarImage, AvatarFallback } from './ui/avatar'
@@ -13,14 +13,15 @@ import {
 import Link from 'next/link'
 import { BookOpen, Box, LogOut, PaintBucket, Settings, UserRound } from 'lucide-react'
 import { Logout } from './logout'
+import { getInitials } from '@/lib/utils'
 
 
 export const Avatar = ({ user }: { user: Session['user'] }) => (
     <DropdownMenu>
         <DropdownMenuTrigger>
             <RootAvatar>
-                {user.image && <AvatarImage src={user.image} referrerPolicy='no-referrer' />}
-                {!user.image && <AvatarFallback>{user.name}</AvatarFallback>}
+                <AvatarImage src={user.image || ''} />
+                <AvatarFallback>{getInitials(user.name || 'No name')}</AvatarFallback>
             </RootAvatar>
         </DropdownMenuTrigger>
         <DropdownMenuContent>

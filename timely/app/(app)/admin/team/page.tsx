@@ -3,21 +3,14 @@ import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrig
 import { getUserSession } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { Copy } from "lucide-react"
+import { UpdateRoleForm } from "./update-form"
+import { isAdmin } from "@/lib/authorization"
+import { Role } from "@prisma/client"
+import { getInitials } from "@/lib/utils"
 
 // const DOMAIN = "aftrbrnr.com"
 const DOMAIN = "localhost:3000"
-const roles = ['OWNER', 'ADMIN', 'USER', 'TRACKER', 'VIEWER']
 
-function capitalizeWord(word: string): string {
-    if (!word) return word
-    return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-}
-
-
-const getInitials = (name: string) => {
-    const [firstName, lastName] = name.split(" ")
-    return firstName.charAt(0).toUpperCase() + lastName.charAt(0).toUpperCase()
-}
 
 const InviteLink = async () => {
     const user = await getUserSession()
@@ -46,10 +39,30 @@ const InviteLink = async () => {
 
 export default async function TeamPage() {
 
-    async function updateUserRole(data:FormData) {
+    async function updateUserRole({ id, role }: { id: string, role: Role }) {
         'use server'
+        const session = await getUserSession()
+        const user = await prisma.user.findUnique({
+            where: {
+                id: session.id
+            }
+        })
+        // checks use and if they have access to change roles
+        if (!isAdmin(user)) {
+            throw new Error('Not authorized to change roles')
+        }
+        if (user?.role === "OWNER" && user.id === id) {
+            throw new Error('Owners cannot change roles')
+        }
 
-        console.log(data)
+        await prisma.user.update({
+            where: {
+                id
+            },
+            data: {
+                role
+            }
+        })
     }
 
     const user = await getUserSession()
@@ -61,12 +74,12 @@ export default async function TeamPage() {
 
     return (
         <div>
-            <h1 className="text-3xl mb-4">Team</h1>
+            <h1 className="text-3xl font-bold mb-4">Team</h1>
             <InviteLink />
-            <h2 className="text-xl font-semibold mb-6">Your Team</h2>
-            <ul className="px-4">
+            <h2 className="text-xl font-semibold mb-8">Your Team</h2>
+            <ul className="px-4 w-full divide-y divide-neutral-200/50">
                 {users.map(user => (
-                    <li key={user.id} className='grid grid-cols-[64px_minmax(500px,_1fr)_100px]'>
+                    <li key={user.id} className='grid grid-cols-[64px_minmax(500px,_1fr)_100px] py-4'>
                         <div>
                             <Avatar className="h-12 w-12">
                                 <AvatarImage src={user.avatar || ''} />
@@ -78,27 +91,8 @@ export default async function TeamPage() {
                             <span className="text-slate-500">{user.email}</span>
                         </div>
                         <div className="flex flex-col justify-center gap-1">
-                            <form action={updateUserRole}>
-                                <Select defaultValue={user.role} >
-                                    <SelectTrigger className="w-[100px]">
-                                        <SelectValue placeholder="Role" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectGroup>
-                                            <SelectLabel>User Roles</SelectLabel>
-                                            {
-                                                roles.map((role) => (
-                                                    <SelectItem key={role} value={role}>
-                                                        {capitalizeWord(role)}
-                                                    </SelectItem>
-                                                ))
-                                            }
-                                        </SelectGroup>
-                                    </SelectContent>
-                                </Select>
-                            </form>
+                            <UpdateRoleForm id={user.id} onRoleUpdate={updateUserRole} role={user.role} />
                         </div>
-
                     </li>
                 ))}
             </ul>
