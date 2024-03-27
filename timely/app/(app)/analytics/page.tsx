@@ -169,7 +169,7 @@ export default async function AnalyticsPage({ searchParams: { from: fromUnparsed
                 {clients.length > 0 && (
                     <ul className="">
                         {clients.map((client) => (
-                            <div>
+                            <div key={client.id}>
                                 <h2 className="text-lg font-bold space-y-3">{client.name}</h2>
                                 <li key={client.id} className="py-2 divide-y">
                                     {client.activities.map((activity) => (
