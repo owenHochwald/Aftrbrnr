@@ -33,7 +33,7 @@ export const Avatar = ({ user }: { user: Session['user'] }) => (
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
                 <a href="/admin/profile">
                     <Settings className="w-4 h-4 mr-1.5" strokeWidth={1.5} />
-                    Profile Settings
+                    Settings
                 </a>
             </DropdownMenuItem>
             <DropdownMenuItem className="w-full cursor-pointer" asChild>
