@@ -3,6 +3,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import GoogleSignInButton from './GoogleSignInButton'
 
 export default function SignInPage() {
 
@@ -14,9 +15,7 @@ export default function SignInPage() {
           <h1 className="text-3xl font-bold">Login to Aftrbrnr</h1>
         </div>
         <div className="grid gap-4">
-          <Button variant="outline" className="w-full">
-            Login with Google
-          </Button>
+          <GoogleSignInButton />
         </div>
         <div className="mt-4 text-center text-sm">
           Don&apos;t have an account?{" "}

@@ -7,8 +7,8 @@ export default function GoogleSignInButton() {
     const loginWithGoogle = () => signIn('google', { callbackUrl: '/track' })
 
     return (
-        <div className='flex justify-center'>
-        <Button onClick={loginWithGoogle}>Log In With Google</Button>
+        <div className='flex justify-center w-full'>
+        <Button variant={'outline'} className='w-full' onClick={loginWithGoogle}>Login with Google</Button>
     </div>
     )
 }
