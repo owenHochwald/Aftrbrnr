@@ -25,7 +25,6 @@ export async function SignedInNavBar() {
                             links.map(({ href, label }) => (
                                 <li key={href}>
                                     <Link
-                                        // className="py-1 px-2 hover:bg-slate-100 rounded text-blue-800 hover:text-blue-500"
                                         className='text-foreground transition-colors hover:text-foreground text-muted-foreground hover:bg-slate-100 rounded-md px-2 py-1'
                                         href={href}
                                     >
