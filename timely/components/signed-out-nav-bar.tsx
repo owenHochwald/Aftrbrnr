@@ -3,6 +3,7 @@ import Link from 'next/link'
 import ThemeSwitch from './switch-theme'
 
 import { Button } from './ui/button'
+import { Key } from 'lucide-react'
 
 const links = [
     { href: "/home", label: "Home" },
@@ -34,11 +35,11 @@ export async function SignedOutNavBar() {
                     </ul>
                 </nav>
                 <span className="flex-grow" />
-                <ThemeSwitch />
                 {/* make this do something */}
-                <Button className='' >
-                    <Link href="/signin">
-                        Login
+                <ThemeSwitch />
+                <Button className='inline-flex items-center' variant={'secondary'} >
+                    <Link href="/signin" className='flex items-center'>
+                    Login <span className="ml-1"><Key className='h-4 w-4'/></span>
                     </Link>
                 </Button>
 
