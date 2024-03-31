@@ -131,7 +131,6 @@ const HomePage: React.FC = () => {
                                 <CardTitle className="text-3xl font-bold">Help</CardTitle>
                                 <ul>
                                     <li>Support & Knowledge Base</li>
-                                    <li>Request A Demo</li>
                                     <li>Toggl Affiliate Program</li>
                                     <li>Contact Us</li>
                                 </ul>
