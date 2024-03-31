@@ -21,7 +21,7 @@ export default async function AdminLayout({
     return (
         <>
             <SignedOutNavBar />
-            <div className="px-4 flex-grow mt-5">{children}</div>
+            <div className="px-4 flex-grow w-full mx-auto mt-10">{children}</div>
         </>
     )
 }
