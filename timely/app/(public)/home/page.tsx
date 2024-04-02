@@ -37,121 +37,112 @@ const HomePage: React.FC = () => {
             <div className='py-10 mt-7'>
                 <CardSelector />
             </div>
-            <div>
-                <Card className="w-full bg-black py-10">
-                    <CardHeader>
-                        <CardTitle className='flex flex-col text-center text-5xl font-bold text-white'>
-                            <h1>Time tracking for anyone.</h1> 
-                            <h1>Anywhere.</h1>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className='space-x-4'>
-                        <div className="grid gap-6 grid-cols-3 justify-center">
-                            <Card className='text-center'>
-                                <CardHeader>
-                                    <CardTitle className='text-5xl font-bold py-3'>Enterprise Teams</CardTitle>
-                                </CardHeader>
-                                <CardDescription className='flex flex-col text-lg pb-10 py-5'>
-                                    <span>Frictionless time reporting for employees and customizable time insights for managers.</span>
-                                    <Label className='text-medium italic text-base'>Make it easy</Label>
-                                </CardDescription>
+            <div className='pb-10'>
+                <div className="px-10 bg-black pt-10 pb-20">
+                    <div className='text-white text-center font-bold text-5xl pb-8'>
+                        <h1>Time tracking for anyone.</h1>
+                        <h1>Anywhere.</h1>
+                    </div>
+                    <div className='flex grid gap-6 grid-cols-3 space-x-4 justify-center items-center'>
+                        <Card className='text-center'>
+                            <CardHeader>
+                                <CardTitle className='text-5xl font-bold py-3'>Enterprise Teams</CardTitle>
+                            </CardHeader>
+                            <CardDescription className='flex flex-col text-lg pb-10 py-5 mb-40'>
+                                <span className='mb-10'>Frictionless time reporting for employees and customizable time insights for managers.</span>
+                                <Label className='text-medium italic text-base'>Make it easy</Label>
+                            </CardDescription>
+                            <CardFooter className='flex items-center justify-center border-t p-4'>
+                                <Button className='inline-flex items-center'>
+                                    <Link href="/signin" className='flex items-center'>
+                                        Learn More
+                                    </Link>
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                        <Card className='text-center'>
+                            <CardHeader>
+                                <CardTitle className='text-5xl font-bold py-3'>Consultants</CardTitle>
+                            </CardHeader>
+                            <CardDescription className='flex flex-col text-lg pb-10 py-5 mb-40 px-1'>
+                                <span className='mb-10'>Track your own time and boost your efficiency to make the most of your resources.</span>
+                                <Label className='text-medium italic text-base'>Make every minute count.</Label>
+                            </CardDescription>
+                            <CardFooter className='flex items-center justify-center border-t p-4'>
                                 <Button className='inline-flex items-center justify-center'>
                                     <Link href="/signin" className='flex items-center'>
                                         Learn More
                                     </Link>
                                 </Button>
-                            </Card>
-                            <Card className='text-center'>
-                                <CardHeader>
-                                    <CardTitle className='text-5xl font-bold py-3'>Consultants</CardTitle>
-                                </CardHeader>
-                                <CardDescription className='flex flex-col text-lg pb-10 py-5'>
-                                    <span>Track your own time and boost your efficiency to make the most of your resources.</span>
-                                    <Label className='text-medium italic text-base'>Make every minute count.</Label>
-                                </CardDescription>
+                            </CardFooter>
+                        </Card>
+                        <Card className='text-center'>
+                            <CardHeader>
+                                <CardTitle className='text-5xl font-bold py-3'>Personal Use</CardTitle>
+                            </CardHeader>
+                            <CardDescription className='flex flex-col text-lg pb-8 py-5 mb-36'>
+                                <span className='mb-16'>Make them most of your own time with self managed activities.</span>
+                                <Label className='text-medium italic text-base'>Stay focused.</Label>
+                            </CardDescription>
+                            <CardFooter className='flex items-center justify-center border-t p-4'>
                                 <Button className='inline-flex items-center justify-center'>
                                     <Link href="/signin" className='flex items-center'>
                                         Learn More
                                     </Link>
                                 </Button>
-                            </Card>
-                            <Card className='text-center'>
-                                <CardHeader>
-                                    <CardTitle className='text-5xl font-bold py-3'>Personal Use</CardTitle>
-                                </CardHeader>
-                                <CardDescription className='flex flex-col text-lg pb-10 py-5'>
-                                    <span>Make them most of your own time with self managed activities.</span>
-                                    <Label className='text-medium italic text-base'>Stay focused.</Label>
-                                </CardDescription>
-                                <Button className='inline-flex items-center justify-center'>
-                                    <Link href="/signin" className='flex items-center'>
-                                        Learn More
-                                    </Link>
-                                </Button>
-                            </Card>
+                            </CardFooter>
+                        </Card>
+                    </div>
+                </div>
+            </div>
+            <footer className="bg-gray-50 pt-10 w-full">
+                <Card className="max-w-screen mx-auto pt-8 text-center justify-center">
+                    <CardContent className="grid grid-cols-3 gap-5">
+                        <div>
+                            <CardTitle className="text-3xl font-bold">Product</CardTitle>
+                            <ul className='mt-4'>
+                                <li>
+                                    <Link href="/features">Features</Link>
+                                </li>
+                                <li>
+                                    <Link href="/faq">FAQ</Link>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <CardTitle className="text-3xl font-bold">Company</CardTitle>
+                            <ul className='mt-4'>
+                                <li>
+                                    <Link href="/about">About</Link>
+                                </li>
+                                <li>
+                                    <Link href="/team">Our Team</Link>
+                                </li>
+                                <li>
+                                    <Link href="/blog">Blog</Link>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <CardTitle className="text-3xl font-bold">Support</CardTitle>
+                            <ul className='mt-4'>
+                                <li>
+                                    <Link href="/contact">Contact Us</Link>
+                                </li>
+                                <li>
+                                    <Link href="/help">Help Center</Link>
+                                </li>
+                                <li>
+                                    <Link href="/terms">Terms of Service</Link>
+                                </li>
+                            </ul>
                         </div>
                     </CardContent>
                 </Card>
-            </div>
-            <footer className="bg-gray-100 py-10">
-                <div className="container mx-auto">
-                    <Card className="max-w-6xl">
-                        <CardContent className="grid grid-cols-4 gap-8">
-                            <div>
-                                <CardTitle className="text-3xl font-bold">Product</CardTitle>
-                                <ul>
-                                    <li>Features</li>
-                                    <li>Pricing</li>
-                                    <li>Integrations</li>
-                                    <li>Case Studies</li>
-                                    <li>API</li>
-                                    <li>Use Cases</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <CardTitle className="text-3xl font-bold">Billing and Invoicing</CardTitle>
-                                <ul>
-                                    <li>Employee Time Tracking</li>
-                                    <li>Project Budgeting</li>
-                                    <li>Reporting</li>
-                                    <li>Payroll</li>
-                                    <li>Work Hours Tracker</li>
-                                    <li>Timesheet App</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <CardTitle className="text-3xl font-bold">Download</CardTitle>
-                                <ul>
-                                    <li>Mobile Apps</li>
-                                    <li>Desktop Apps</li>
-                                    <li>Browser Extensions</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <CardTitle className="text-3xl font-bold">Help</CardTitle>
-                                <ul>
-                                    <li>Support & Knowledge Base</li>
-                                    <li>Toggl Affiliate Program</li>
-                                    <li>Contact Us</li>
-                                </ul>
-                            </div>
-                            <div>
-                                <CardTitle className="text-3xl font-bold">Resources</CardTitle>
-                                <ul>
-                                    <li>Work From Home Hub</li>
-                                    <li>Timesheet Templates</li>
-                                    <li>Time Card Calculator</li>
-                                    <li>Media Kit</li>
-                                    <li>Privacy Policy</li>
-                                    <li>Terms of Service</li>
-                                </ul>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
             </footer>
         </div>
     );
 };
+
 
 export default HomePage;

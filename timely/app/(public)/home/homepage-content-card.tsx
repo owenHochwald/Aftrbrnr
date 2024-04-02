@@ -18,13 +18,13 @@ export const CardSelector: React.FC = () => {
                     Free, flexible time tracking tool for your business and personal needs
                 </CardTitle>
                 <CardDescription className='text-center text-lg space-x-6 py-4'>
-                    <Button variant="outline" onClick={() => setSelectedButton('button1')}>
+                    <Button variant="outline" className='text-xl' onClick={() => setSelectedButton('button1')}>
                         Project tracking
                     </Button>
-                    <Button variant="outline" onClick={() => setSelectedButton('button2')}>
+                    <Button variant="outline" className='text-xl' onClick={() => setSelectedButton('button2')}>
                         Time billing
                     </Button>
-                    <Button variant="outline" onClick={() => setSelectedButton('button3')}>
+                    <Button variant="outline" className='text-xl' onClick={() => setSelectedButton('button3')}>
                         Time reporting
                     </Button>
                 </CardDescription>
