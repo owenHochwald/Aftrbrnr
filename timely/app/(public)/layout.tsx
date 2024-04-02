@@ -1,8 +1,4 @@
 import { SignedOutNavBar } from '@/components/signed-out-nav-bar'
-import { Button } from '@/components/ui/button'
-import { getUserSession } from '@/lib/auth'
-import { prisma } from '@/lib/prisma'
-import Link from 'next/link'
 
 const links = [
     { href: "/admin/profile", label: "Profile" },

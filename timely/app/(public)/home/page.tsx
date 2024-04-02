@@ -102,10 +102,10 @@ const HomePage: React.FC = () => {
                             <CardTitle className="text-3xl font-bold">Product</CardTitle>
                             <ul className='mt-4'>
                                 <li>
-                                    <Link href="/features">Features</Link>
+                                    <Link href="product/features">Features</Link>
                                 </li>
                                 <li>
-                                    <Link href="/faq">FAQ</Link>
+                                    <Link href="product/faq">FAQ</Link>
                                 </li>
                             </ul>
                         </div>
@@ -113,13 +113,10 @@ const HomePage: React.FC = () => {
                             <CardTitle className="text-3xl font-bold">Company</CardTitle>
                             <ul className='mt-4'>
                                 <li>
-                                    <Link href="/about">About</Link>
+                                    <Link href="company/about">About</Link>
                                 </li>
                                 <li>
-                                    <Link href="/team">Our Team</Link>
-                                </li>
-                                <li>
-                                    <Link href="/blog">Blog</Link>
+                                    <Link href="company/our-team">Meet Our Team</Link>
                                 </li>
                             </ul>
                         </div>
@@ -127,13 +124,13 @@ const HomePage: React.FC = () => {
                             <CardTitle className="text-3xl font-bold">Support</CardTitle>
                             <ul className='mt-4'>
                                 <li>
-                                    <Link href="/contact">Contact Us</Link>
+                                    <Link href="support/contact">Contact Us</Link>
                                 </li>
                                 <li>
-                                    <Link href="/help">Help Center</Link>
+                                    <Link href="support/help">Help Center</Link>
                                 </li>
                                 <li>
-                                    <Link href="/terms">Terms of Service</Link>
+                                    <Link href="support/terms">Terms of Service</Link>
                                 </li>
                             </ul>
                         </div>
