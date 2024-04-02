@@ -49,7 +49,7 @@ export const CardSelector: React.FC = () => {
                     <div className="flex">
                         <div className="w-1/2 p-4">
                             <Label className='text-md font-medium py-4'>ACCURATE TIME BILLING</Label>
-                            <h1 className='text-3xl font-bold py-4'>We'll take care of the hours while you put in the work.</h1>
+                            <h1 className='text-3xl font-bold py-4'>We&apos;ll take care of the hours while you put in the work.</h1>
                             <p>
                                 Set hourly rates, track billable time, create invoices,
                                 and share them with your clients to get paid on time.
@@ -67,7 +67,7 @@ export const CardSelector: React.FC = () => {
                             <h1 className='text-3xl font-bold py-4'>Know exactly how much time your team spends on tasks.</h1>
                             <p>
                                 Say goodbye to inaccurate weekly timesheets and get
-                                a handle on your team's exact billable and non-billable hours.
+                                a handle on your team&apos;s exact billable and non-billable hours.
                             </p>
                         </div>
                         <div className="w-1/2 p-4">
