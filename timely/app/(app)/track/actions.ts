@@ -73,3 +73,20 @@ export async function stopActivity(data: FormData) {
     })
     revalidatePath('/track')
 }
+
+
+// export async function resumeActivity(id: string) {
+//     console.log("is this working?")
+//     const activity = await prisma.activity.findUnique({
+//         where: {
+//             id: id
+//         }
+//     });
+
+//     if(activity) {
+//         console.log('Activity ID:', activity.id);
+//         console.log('Activity Name:', activity.name);
+//     } else {
+//         console.log('Activity not found');
+//     }
+// }

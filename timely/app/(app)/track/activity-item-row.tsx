@@ -14,8 +14,10 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 import { pad } from '@/lib/utils';
+// import { updateActivity, deleteActivity, resumeActivity, click } from "./actions";
 import { updateActivity, deleteActivity } from "./actions";
-
+import { revalidatePath } from "next/cache";
+import { prisma } from "@/lib/prisma";
 
 
 type Props = {
@@ -132,7 +134,9 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                 <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
                 <span className='flex-grow' />
 
-                <PlayIcon/>
+                <Button variant={'outline'} size='icon' >
+                    <PlayIcon onClick={() => console.log(activity.id)} />
+                </Button>
                 <Button onClick={edit}>Edit</Button>
                 {/* Delete dialog and button */}
                 <AlertDialog>
