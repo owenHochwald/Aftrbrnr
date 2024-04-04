@@ -1,7 +1,7 @@
 'use client'
 
 import { Activity, Project } from "@prisma/client";
-import { ArrowRight, CalendarIcon, MoreHorizontal } from "lucide-react";
+import { ArrowRight, CalendarIcon, MoreHorizontal, PlayIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -131,7 +131,10 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                 </span>
                 <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
                 <span className='flex-grow' />
+
+                <PlayIcon/>
                 <Button onClick={edit}>Edit</Button>
+                {/* Delete dialog and button */}
                 <AlertDialog>
                     <AlertDialogTrigger>
                         <Button className="ml-2 hover:bg-red-600" variant="outline">Delete</Button>
