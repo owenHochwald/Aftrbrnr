@@ -1,23 +1,22 @@
 'use client'
 
-import { Button } from "@/components/ui/button"
-import { formatDuration } from 'date-fns'
+import { Activity, Project } from "@prisma/client";
+import { ArrowRight, CalendarIcon, MoreHorizontal } from "lucide-react";
+import { useState } from "react";
 
-import { Input } from "@/components/ui/input"
-import { pad } from '@/lib/utils'
-import { Activity, Project } from "@prisma/client"
-import { useState } from "react"
-import { ArrowRight, CalendarIcon } from "lucide-react"
-import { updateActivity, deleteActivity } from "./actions"
-import { Calendar } from "@/components/ui/calendar"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from "@/components/ui/popover"
-import { Badge } from "@/components/ui/badge"
-import { getUserSession } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
+import { Dialog, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+
+import { pad } from '@/lib/utils';
+import { updateActivity, deleteActivity } from "./actions";
+
+
 
 type Props = {
     activity: Activity
@@ -28,8 +27,6 @@ type EditDateTimeprops = {
     value: Date
     onChange?: (value: Date) => void
 }
-
-
 
 const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
     const [date, setDate] = useState(value)
@@ -64,11 +61,11 @@ const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
                 />
                 <Popover>
                     <PopoverTrigger className="absolute right-2 h-4 w-4">
-                        <CalendarIcon size={16}/>
+                        <CalendarIcon size={16} />
                     </PopoverTrigger>
                     <PopoverContent>
                         <Calendar
-                            mode="single" selected={date} onSelect={onDate}/>
+                            mode="single" selected={date} onSelect={onDate} />
                     </PopoverContent>
                 </Popover>
 
@@ -98,9 +95,9 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                     name="name"
                     defaultValue={activity.name || ''}
                 />
-                <EditDateTime name="startAt" value={activity.startAt}/>
-                <EditDateTime name="endAt" value={activity.endAt || new Date()}/>                
-                <span className="flex-grow"/>
+                <EditDateTime name="startAt" value={activity.startAt} />
+                <EditDateTime name="endAt" value={activity.endAt || new Date()} />
+                <span className="flex-grow" />
                 <Button type="submit">Save</Button>
             </form>
         </li>
@@ -114,38 +111,57 @@ type ReadItemRowProps = Props & {
 
 
 const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
-    return (
-        <li className='py-3 space-x-5 flex items-center'>
-            <span className="text-md font-medium w-1/4">{activity.name || 'Unnamed Task'}</span>
-            <span>
-                {new Intl.DateTimeFormat(undefined, {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                }).format(activity.startAt)}
-            </span>
-            <ArrowRight size={20} />
-            <span>
-                {new Intl.DateTimeFormat(undefined, {
-                    hour: 'numeric',
-                    minute: 'numeric',
-                }).format(activity.endAt || new Date())}
-            </span>
-            <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
-            <span className='flex-grow'/>
-            <Button onClick={edit}>Edit</Button>
-            <Button onClick={ async () => onDelete(activity.id)} className="ml-2 hover:bg-red-600" variant="outline">Delete</Button>
-        </li>
-    )
-}
 
+    return (
+        <>
+            <li className='py-3 space-x-5 flex items-center border-b '>
+                <span className="text-md font-medium w-1/4">{activity.name || 'Unnamed Task'}</span>
+                <span>
+                    {new Intl.DateTimeFormat(undefined, {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                    }).format(activity.startAt)}
+                </span>
+                <ArrowRight size={20} />
+                <span>
+                    {new Intl.DateTimeFormat(undefined, {
+                        hour: 'numeric',
+                        minute: 'numeric',
+                    }).format(activity.endAt || new Date())}
+                </span>
+                <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
+                <span className='flex-grow' />
+                <Button onClick={edit}>Edit</Button>
+                <AlertDialog>
+                    <AlertDialogTrigger>
+                        <Button className="ml-2 hover:bg-red-600" variant="outline">Delete</Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>Are you sure you want to delete this activity?</AlertDialogTitle>
+                            <AlertDialogDescription>
+                                This action cannot be undone. This will permanently delete your activity.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                            <AlertDialogAction className="hover:bg-red-700 bg-red-500" onClick={() => onDelete(activity.id)}> Delete
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            </li>
+        </>
+    );
+};
 
 export const ActivityItemRow = ({ activity }: Props) => {
     const [isEditing, setIsEditing] = useState(false)
     return isEditing ? (
-        <EditItemRow activity={activity}  onSave={() => setIsEditing(false)} />
+        <EditItemRow activity={activity} onSave={() => setIsEditing(false)} />
     ) : (
         <>
-            <ReadItemRow activity={activity}  edit= { () => setIsEditing(true)} onDelete={ deleteActivity }/>
+            <ReadItemRow activity={activity} edit={() => setIsEditing(true)} onDelete={deleteActivity} />
         </>
     )
 }
