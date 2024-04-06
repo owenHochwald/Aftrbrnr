@@ -1,0 +1,11 @@
+Make sure .env database url is set to local
+
+npx prisma migrate dev --name <migration-name>
+
+npx prisma db push
+
+Change .env database url is set to production
+
+npx prisma migrate dev --name <migration-name>
+
+npx prisma db push
