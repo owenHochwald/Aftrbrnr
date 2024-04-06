@@ -1,7 +1,7 @@
 'use client'
 
 import { Activity, Project } from "@prisma/client";
-import { ArrowRight, CalendarIcon, MoreHorizontal, PlayIcon } from "lucide-react";
+import { ArrowRight, CalendarIcon, MoreHorizontal, PlayIcon, Save, SaveIcon, Settings, Settings2, Trash, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -100,7 +100,9 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                 <EditDateTime name="startAt" value={activity.startAt} />
                 <EditDateTime name="endAt" value={activity.endAt || new Date()} />
                 <span className="flex-grow" />
-                <Button type="submit">Save</Button>
+                <Button type="submit" size={'icon'} variant={'ghost'}>
+                    <SaveIcon />
+                </Button>
             </form>
         </li>
     )
@@ -134,14 +136,18 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                 <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
                 <span className='flex-grow' />
 
-                <Button variant={'outline'} size='icon' >
+                <Button variant={'ghost'} size='icon' >
                     <PlayIcon onClick={() => console.log(activity.id)} />
                 </Button>
-                <Button onClick={edit}>Edit</Button>
+                <Button onClick={edit} size={'icon'} variant={'ghost'}>
+                    <Settings2 />
+                </Button>
                 {/* Delete dialog and button */}
                 <AlertDialog>
                     <AlertDialogTrigger>
-                        <Button className="ml-2 hover:bg-red-600" variant="outline">Delete</Button>
+                        <Button size={'icon'} className="ml-2 hover:bg-red-500" variant="ghost">
+                            <TrashIcon />
+                        </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
                         <AlertDialogHeader>
@@ -152,7 +158,8 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                         </AlertDialogHeader>
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                            <AlertDialogAction className="hover:bg-red-700 bg-red-500" onClick={() => onDelete(activity.id)}> Delete
+                            <AlertDialogAction className="hover:bg-red-700 bg-red-500" onClick={() => onDelete(activity.id)}>
+                                <TrashIcon size={20}/> Delete
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
