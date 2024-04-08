@@ -7,8 +7,9 @@ import { Activity, Client, Project } from "@prisma/client"
 import { Hammer, Octagon, Play, UserRound } from "lucide-react"
 import { revalidatePath } from "next/cache"
 import { ActivityItemRow } from "./activity-item-row"
-import { ActivityDuration } from "./duration"
-import { stopActivity, upsertActivity } from "./actions"
+import { ActivityDuration, DisplayDuration } from "./duration"
+import { pauseActivity, resumeActivity, stopActivity, upsertActivity } from "./actions"
+import { PauseResume } from "./pause-resume"
 
 type TimeProps = {
     startAt: string
@@ -22,7 +23,7 @@ const Time = ({ startAt }: TimeProps) => {
     return (<div>{elapsed}</div>)
 }
 
-type NewActivityProps = {
+export type NewActivityProps = {
     activity?: Activity | null
     clients: Client[]
     projects: Project[]
@@ -30,8 +31,6 @@ type NewActivityProps = {
 
 
 const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
-    const isPaused = activity ? activity.endAt : false;
-
     return (
         <div>
             <h2 className="text-lg mb-2 font-semibold">What are you working on?</h2>
@@ -78,7 +77,10 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {activity && <ActivityDuration startAt={activity.startAt} />}
+                    {activity && !activity.paused? (<ActivityDuration startAt={activity.startAt} />): null}
+                    {/* pause and resume functionality */}
+                    {activity && <PauseResume activity={activity}/>}
+                    <DisplayDuration displayTime={activity?.endAt} />
                     <Button type="submit">{activity ? <Octagon /> : <Play />}</Button>
                 </div>
             </form>

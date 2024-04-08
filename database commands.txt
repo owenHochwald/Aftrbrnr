@@ -4,8 +4,10 @@ npx prisma migrate dev --name <migration-name>
 
 npx prisma db push
 
-Change .env database url is set to production
+commit and push migrations
 
-npx prisma migrate dev --name <migration-name>
+-----
+
+Change .env database url is set to production
 
 npx prisma db push

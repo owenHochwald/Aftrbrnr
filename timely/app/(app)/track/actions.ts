@@ -57,6 +57,7 @@ export async function upsertActivity(data: FormData) {
 
 export async function stopActivity(data: FormData) {
     'use server'
+
     const client = data.get('client') as string
     const project = data.get('project') as string
     
@@ -67,73 +68,83 @@ export async function stopActivity(data: FormData) {
         data: {
             endAt: new Date(),
             name: data.get('name') as string,
+            // paused: false,
             client: !!client ? {connect: { id: client }} : undefined,
             project: !!project ? {connect: { id: project }} : undefined
         }
     })
     revalidatePath('/track')
 }
-export async function pauseActivity(data: FormData) {
+// export async function pauseActivity(data: FormData) {
+//     'use server'
+//     console.log("Paused")
+//     const client = data.get('client') as string
+//     const project = data.get('project') as string
+    
+//     await prisma.activity.update({
+//         where: {
+//             id: data.get('id') as string
+//         },
+//         data: {
+//             endAt: new Date(),
+//             name: data.get('name') as string,
+//             paused: true,
+//             client: !!client ? {connect: { id: client }} : undefined,
+//             project: !!project ? {connect: { id: project }} : undefined
+//         }
+//     })
+//     revalidatePath('/track')
+// }
+
+export async function pauseActivity(activity: any) {
     'use server'
-    const client = data.get('client') as string
-    const project = data.get('project') as string
     
     await prisma.activity.update({
         where: {
-            id: data.get('id') as string
+            id: activity.id as string
         },
         data: {
             endAt: new Date(),
-            name: data.get('name') as string,
-            client: !!client ? {connect: { id: client }} : undefined,
-            project: !!project ? {connect: { id: project }} : undefined
+            name: activity.name as string,
+            paused: true,
         }
     })
     revalidatePath('/track')
 }
 
 
+export async function resumeActivity(activity: any) {
+    'use server'
+    
+    await prisma.activity.update({
+        where: {
+            id: activity.id as string
+        },
+        data: {
+            endAt: new Date(),
+            name: activity.name as string,
+            paused: false,
+        }
+    })
+    revalidatePath('/track')
+}
 
-// export async function resumeActivity(id: string) {
-//     console.log("is this working?")
-//     const activity = await prisma.activity.findUnique({
-//         where: {
-//             id: id
-//         }
-//     });
-
-//     if(activity) {
-//         console.log('Activity ID:', activity.id);
-//         console.log('Activity Name:', activity.name);
-//     } else {
-//         console.log('Activity not found');
-//     }
-// }
-
-
-// export async function pauseActivity(id: string) {
+// export async function resumeActivity(data: FormData) {
+//     'use server'
+//     const client = data.get('client') as string
+//     const project = data.get('project') as string
+    
 //     await prisma.activity.update({
 //         where: {
-//             id
+//             id: data.get('id') as string
 //         },
 //         data: {
-//             isPaused: true // Assuming 'isPaused' is a field in your activity model
+//             endAt: new Date(),
+//             name: data.get('name') as string,
+//             paused: false,
+//             client: !!client ? {connect: { id: client }} : undefined,
+//             project: !!project ? {connect: { id: project }} : undefined
 //         }
-//     });
-
-//     revalidatePath('/track');
-// }
-
-// // Server action to resume an activity
-// export async function resumeActivity(id: string) {
-//     await prisma.activity.update({
-//         where: {
-//             id
-//         },
-//         data: {
-//             isPaused: false // Assuming 'isPaused' is a field in your activity model
-//         }
-//     });
-
-//     revalidatePath('/track');
+//     })
+//     revalidatePath('/track')
 // }
