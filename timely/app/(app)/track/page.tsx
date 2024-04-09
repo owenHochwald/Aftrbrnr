@@ -38,9 +38,6 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                 <div className="flex items-center space-x-4">
                     <Input type="text" name="name" defaultValue={activity?.name || ""} />
                     <input type="hidden" name="id" defaultValue={activity?.id || ""} />
-                    {/* <button onClick={isPaused ? handlePlayClick : handlePauseClick}>
-                        {isPaused ? 'Resume' : 'Pause'}
-                    </button> */}
                     <Select name='client'>
                         <SelectTrigger className="w-[60px]">
                             <UserRound size={5} className="w-5 h-5" />
@@ -105,67 +102,6 @@ const DailyActivites = ({ activites }: DailyActivitesProps) => {
         </div>
     )
 }
-
-// const ResumeActivity = ({ activity, clients, projects }: NewActivityProps) => {
-//     // const [isResuming, setIsResuming] = useState(false);
-
-//     const handleResume = () => {
-//         // Handle the resume logic here
-//     };
-
-//     return (
-//         <div>
-//             <h2 className="text-lg mb-2 font-semibold">Resume Activity</h2>
-//             <form action={activity ? stopActivity : upsertActivity}>
-//                 <div className="flex items-center space-x-4">
-//                     <Input type="text" name="name" defaultValue={activity?.name || ""} />
-//                     <input type="hidden" name="id" defaultValue={activity?.id || ""} />
-//                     <Select name='client'>
-//                         <SelectTrigger className="w-[60px]">
-//                             <UserRound size={5} className="w-5 h-5" />
-//                         </SelectTrigger>
-//                         <SelectContent>
-//                             <SelectGroup>
-//                                 <SelectLabel>Clients</SelectLabel>
-//                                 <SelectItem value="name">None</SelectItem>
-//                                 {
-//                                     clients.map((client) => (
-//                                         <SelectItem value={client.id} key={client.id}>
-//                                             {client.name}
-//                                         </SelectItem>
-//                                     ))
-//                                 }
-//                             </SelectGroup>
-//                         </SelectContent>
-//                     </Select>
-//                     <Select name='project'>
-//                         <SelectTrigger className="w-[60px]">
-//                             <Hammer size={5} className="w-5 h-5" />
-//                         </SelectTrigger>
-//                         <SelectContent>
-//                             <SelectGroup>
-//                                 <SelectLabel>Projects</SelectLabel>
-//                                 <SelectItem value="name">None</SelectItem>
-//                                 {
-//                                     projects.map((project) => (
-//                                         <SelectItem value={project.id} key={project.id}>
-//                                             {project.name}
-//                                         </SelectItem>
-//                                     ))
-//                                 }
-//                             </SelectGroup>
-//                         </SelectContent>
-//                     </Select>
-//                     <Button type="submit">Resume Activity</Button>
-//                 </div>
-//             </form>
-//         </div>
-//     );
-// };
-
-
-
-
 
 
 export default async function TrackPage() {

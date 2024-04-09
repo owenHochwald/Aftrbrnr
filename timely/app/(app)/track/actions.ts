@@ -33,6 +33,7 @@ export async function upsertActivity(data: FormData) {
     const user = await getUserSession()
     const client = data.get('client') as string
     const project = data.get('project') as string
+    const startAt = new Date();
 
     await prisma.activity.upsert({
         where: {
@@ -42,7 +43,9 @@ export async function upsertActivity(data: FormData) {
             user: { connect: { id: user.id } },
             tenant: { connect: { id: user.tenant.id } },
             name: data.get('name') as string,
-            startAt: new Date(),
+            startAt: startAt,
+            startAtArray: [new Date()],
+            endAtArray: [],
             client: !!client ? {connect: { id: client }} : undefined,
             project: !!project ? {connect: { id: project }} : undefined
         },
@@ -68,33 +71,16 @@ export async function stopActivity(data: FormData) {
         data: {
             endAt: new Date(),
             name: data.get('name') as string,
-            // paused: false,
+            paused: false,
+            endAtArray: {
+                push: new Date()
+            },
             client: !!client ? {connect: { id: client }} : undefined,
             project: !!project ? {connect: { id: project }} : undefined
         }
     })
     revalidatePath('/track')
 }
-// export async function pauseActivity(data: FormData) {
-//     'use server'
-//     console.log("Paused")
-//     const client = data.get('client') as string
-//     const project = data.get('project') as string
-    
-//     await prisma.activity.update({
-//         where: {
-//             id: data.get('id') as string
-//         },
-//         data: {
-//             endAt: new Date(),
-//             name: data.get('name') as string,
-//             paused: true,
-//             client: !!client ? {connect: { id: client }} : undefined,
-//             project: !!project ? {connect: { id: project }} : undefined
-//         }
-//     })
-//     revalidatePath('/track')
-// }
 
 export async function pauseActivity(activity: any) {
     'use server'
@@ -106,10 +92,12 @@ export async function pauseActivity(activity: any) {
         data: {
             endAt: new Date(),
             name: activity.name as string,
+            endAtArray: {
+                push: new Date()
+            },
             paused: true,
         }
     })
-    revalidatePath('/track')
 }
 
 
@@ -121,30 +109,12 @@ export async function resumeActivity(activity: any) {
             id: activity.id as string
         },
         data: {
-            endAt: new Date(),
+            startAt: new Date(),
+            startAtArray: {
+                push: new Date()
+            },
             name: activity.name as string,
             paused: false,
         }
     })
-    revalidatePath('/track')
 }
-
-// export async function resumeActivity(data: FormData) {
-//     'use server'
-//     const client = data.get('client') as string
-//     const project = data.get('project') as string
-    
-//     await prisma.activity.update({
-//         where: {
-//             id: data.get('id') as string
-//         },
-//         data: {
-//             endAt: new Date(),
-//             name: data.get('name') as string,
-//             paused: false,
-//             client: !!client ? {connect: { id: client }} : undefined,
-//             project: !!project ? {connect: { id: project }} : undefined
-//         }
-//     })
-//     revalidatePath('/track')
-// }
