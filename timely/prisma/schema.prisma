@@ -46,6 +46,7 @@ model Activity {
   name      String?
   startAt   DateTime
   endAt     DateTime?
+  times     DateTime[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   paused    Boolean   @default(false)
