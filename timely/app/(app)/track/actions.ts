@@ -3,6 +3,7 @@
 import { getUserSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 
 export async function updateActivity(data: FormData) {
     await prisma.activity.update({
@@ -46,45 +47,92 @@ export async function upsertActivity(data: FormData) {
             startAt: startAt,
             startAtArray: [new Date()],
             endAtArray: [],
-            client: !!client ? {connect: { id: client }} : undefined,
-            project: !!project ? {connect: { id: project }} : undefined
+            client: !!client ? { connect: { id: client } } : undefined,
+            project: !!project ? { connect: { id: project } } : undefined
         },
         update: {
             name: data.get('name') as string,
-            client: !!client ? {connect: { id: client }} : undefined,
-            project: !!project ? {connect: { id: project }} : undefined
+            client: !!client ? { connect: { id: client } } : undefined,
+            project: !!project ? { connect: { id: project } } : undefined
         }
     })
     revalidatePath('/track')
 }
+
+// export async function stopActivity(data: FormData) {
+//     'use server'
+
+//     const client = data.get('client') as string
+//     const project = data.get('project') as string
+
+
+//     await prisma.activity.update({
+//         where: {
+//             id: data.get('id') as string
+//         },
+//         data: {
+//             endAt: new Date(),
+//             name: data.get('name') as string,
+//             paused: false,
+//             endAtArray: {
+//                 push: new Date()
+//             },
+//             client: !!client ? { connect: { id: client } } : undefined,
+//             project: !!project ? { connect: { id: project } } : undefined
+//         }
+//     })
+//     revalidatePath('/track')
+// }
 
 export async function stopActivity(data: FormData) {
     'use server'
 
     const client = data.get('client') as string
     const project = data.get('project') as string
-    
-    await prisma.activity.update({
+    const activity = await prisma.activity.findUnique({
         where: {
             id: data.get('id') as string
-        },
-        data: {
-            endAt: new Date(),
-            name: data.get('name') as string,
-            paused: false,
-            endAtArray: {
-                push: new Date()
-            },
-            client: !!client ? {connect: { id: client }} : undefined,
-            project: !!project ? {connect: { id: project }} : undefined
         }
-    })
-    revalidatePath('/track')
+    });
+
+    if (activity && !activity.paused) {
+        await prisma.activity.update({
+            where: {
+                id: data.get('id') as string
+            },
+            data: {
+                endAt: new Date(),
+                name: data.get('name') as string,
+                paused: false,
+                endAtArray: {
+                    push: new Date()
+                },
+                client: !!client ? { connect: { id: client } } : undefined,
+                project: !!project ? { connect: { id: project } } : undefined
+            }
+        });
+    } else {
+        await prisma.activity.update({
+            where: {
+                id: data.get('id') as string
+            },
+            data: {
+                name: data.get('name') as string,
+                paused: false,
+                endAtArray: {
+                    push: new Date()
+                },
+                client: !!client ? { connect: { id: client } } : undefined,
+                project: !!project ? { connect: { id: project } } : undefined
+            }
+        });
+    }
+    revalidatePath('/track');
 }
 
 export async function pauseActivity(activity: any) {
     'use server'
-    
+
     await prisma.activity.update({
         where: {
             id: activity.id as string
@@ -103,7 +151,7 @@ export async function pauseActivity(activity: any) {
 
 export async function resumeActivity(activity: any) {
     'use server'
-    
+
     await prisma.activity.update({
         where: {
             id: activity.id as string

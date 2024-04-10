@@ -2,12 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { pauseActivity, resumeActivity } from "./actions";
-import React, { useState } from 'react'; 
+import React, { useContext  } from 'react'; 
 import { Pause, Play } from "lucide-react";
+import { ActivityContext } from './ActivityContext'; // Import ActivityContext
 
 
 export function PauseResume({ activity }: any) {
-    const [isPaused, setIsPaused] = useState(activity?.paused || false);
+    const { isPaused, setIsPaused } = useContext(ActivityContext);
   
     const handleClick = () => {
       if (isPaused) {
@@ -22,7 +23,7 @@ export function PauseResume({ activity }: any) {
     return (
       <div>
         <Button type="button" onClick={handleClick}>
-          {isPaused ? <Play strokeWidth={1.5}/> : <Pause strokeWidth={1.5}/>}
+          {isPaused ? <Pause strokeWidth={1.5}/> : <Play strokeWidth={1.5}/>}
         </Button>
       </div>
     );

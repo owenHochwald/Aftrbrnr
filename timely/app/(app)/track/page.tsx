@@ -10,6 +10,7 @@ import { ActivityItemRow } from "./activity-item-row"
 import { ActivityDuration, DisplayDuration } from "./duration"
 import { pauseActivity, resumeActivity, stopActivity, upsertActivity } from "./actions"
 import { PauseResume } from "./pause-resume"
+import { ActivityProvider } from "./ActivityContext"
 
 type TimeProps = {
     startAt: string
@@ -74,10 +75,18 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {activity && !activity.paused? (<ActivityDuration startAt={activity.startAt} />): null}
+                    {activity && !activity.paused ? (
+                        <div>
+                            <ActivityDuration startAt={activity.startAt} />
+                            {/* <ActivityDuration startAt={activity.startAt} /> */}
+
+                        </div>
+                    ) :
+                        null
+                    }
                     {/* pause and resume functionality */}
-                    {activity && <PauseResume activity={activity}/>}
-                    <DisplayDuration displayTime={activity?.endAt} />
+                    {activity && <PauseResume activity={activity} />}
+                    {/* <DisplayDuration displayTime={activity?.endAt} /> */}
                     <Button type="submit">{activity ? <Octagon /> : <Play />}</Button>
                 </div>
             </form>
@@ -155,9 +164,12 @@ export default async function TrackPage() {
 
     return (
         <div className="mx-auto container py-4 space-y-12">
-            <NewActivity activity={currentActivity} clients={clients} projects={projects} />
-            {/* <ResumeActivity activity={currentActivity} clients={clients} projects={projects} /> */}
-            <DailyActivites activites={dailyActivites} />
+            <ActivityProvider>
+                <NewActivity activity={currentActivity} clients={clients} projects={projects} />
+                {/* <ResumeActivity activity={currentActivity} clients={clients} projects={projects} /> */}
+                <DailyActivites activites={dailyActivites} />
+            </ActivityProvider>
+
         </div>
     )
 }

@@ -1,7 +1,9 @@
 'use client'
 
 import { pad } from '@/lib/utils'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
+import { ActivityContext } from './ActivityContext'
+
 
 
 type ActivityDurationProps = {
@@ -9,20 +11,26 @@ type ActivityDurationProps = {
 }
 
 type DisplayDurationProps = {
-    displayTime: Date | null| undefined
+    displayTime: Date | null | undefined
 }
 
 export const ActivityDuration = ({ startAt }: ActivityDurationProps) => {
     const now = new Date()
     const [elapsed, setElapsed] = useState(0)
+    const { isPaused } = useContext(ActivityContext);
+    console.log(isPaused)
+
 
     useEffect(() => {
         const interval = setInterval(() => {
-            const elapsed = now.getTime() - startAt.getTime()
-            setElapsed(elapsed)
+            if (isPaused) {
+                const elapsed = now.getTime() - startAt.getTime()
+                setElapsed(elapsed)
+            }
         }, 100)
         return () => clearInterval(interval)
-    })
+    },
+    )
 
     const hours = Math.floor(elapsed / 1000 / 60 / 60)
     const minutes = Math.floor((elapsed / 1000 / 60) % 60)
