@@ -29,6 +29,7 @@
  - [ ] Update edit row items with clients and projects
  - [ ] Make analytics have options by clients, projects, user
  - [ ] Makeover profile page
+ - [ ] Create toast for deleting activity with undo button
 
 
 

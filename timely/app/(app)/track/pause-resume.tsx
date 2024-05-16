@@ -8,22 +8,27 @@ import { ActivityContext } from './ActivityContext'; // Import ActivityContext
 
 
 export function PauseResume({ activity }: any) {
+  
     const { isPaused, setIsPaused } = useContext(ActivityContext);
+    console.log(isPaused)
   
     const handleClick = () => {
       if (isPaused) {
         resumeActivity(activity);
         setIsPaused(false);
+        console.log(isPaused)
+
       } else {
         pauseActivity(activity);
         setIsPaused(true); 
+        console.log(isPaused)
       }
     };
   
     return (
       <div>
         <Button type="button" onClick={handleClick}>
-          {isPaused ? <Pause strokeWidth={1.5}/> : <Play strokeWidth={1.5}/>}
+          {!isPaused ? <Play strokeWidth={1.5}/> : <Pause strokeWidth={1.5}/>}
         </Button>
       </div>
     );

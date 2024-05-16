@@ -15,32 +15,35 @@ type DisplayDurationProps = {
 }
 
 export const ActivityDuration = ({ startAt }: ActivityDurationProps) => {
-    const now = new Date()
-    const [elapsed, setElapsed] = useState(0)
+    const [elapsed, setElapsed] = useState(0);
     const { isPaused } = useContext(ActivityContext);
-    console.log(isPaused)
-
+    const [pausedTime, setPausedTime] = useState(0);
 
     useEffect(() => {
         const interval = setInterval(() => {
             if (isPaused) {
-                const elapsed = now.getTime() - startAt.getTime()
-                setElapsed(elapsed)
+                setPausedTime(elapsed);
+            } else {
+                setElapsed((prevElapsed) => prevElapsed + 100);
             }
-        }, 100)
-        return () => clearInterval(interval)
-    },
-    )
+        }, 100);
 
-    const hours = Math.floor(elapsed / 1000 / 60 / 60)
-    const minutes = Math.floor((elapsed / 1000 / 60) % 60)
-    const seconds = Math.floor((elapsed / 1000) % 60)
+
+        return () => {
+            clearInterval(interval);
+        }
+    }, [!isPaused]);
+
+    const totalElapsed = isPaused ? pausedTime : elapsed;
+    const hours = Math.floor(totalElapsed / 1000 / 60 / 60);
+    const minutes = Math.floor((totalElapsed / 1000 / 60) % 60);
+    const seconds = Math.floor((totalElapsed / 1000) % 60);
 
     return (
         <div className="slashed-zero tabular-nums font-bold">
             {pad(hours)}:{pad(minutes)}:{pad(seconds)}
         </div>
-    )
+    );
 }
 
 export const DisplayDuration = ({ displayTime }: DisplayDurationProps) => {
