@@ -7,7 +7,7 @@ import { Activity, Client, Project } from "@prisma/client"
 import { Hammer, Octagon, Play, UserRound } from "lucide-react"
 import { revalidatePath } from "next/cache"
 import { ActivityItemRow } from "./activity-item-row"
-import { ActivityDuration, DisplayDuration } from "./duration"
+import { ActivityDuration, MyStopwatch } from "./duration"
 import { pauseActivity, resumeActivity, stopActivity, upsertActivity } from "./actions"
 import { PauseResume } from "./pause-resume"
 import { ActivityProvider } from "./ActivityContext"
@@ -77,17 +77,24 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                     </Select>
                     {activity && !activity.paused ? (
                         <div>
-                            <ActivityDuration startAt={activity.startAt} />
+                            {/* <ActivityDuration startAt={activity.startAt} /> */}
+                            {/* < MyStopwatch /> */}
                             {/* <ActivityDuration startAt={activity.startAt} /> */}
 
                         </div>
                     ) :
                         null
                     }
+                    {activity ? (
+                        <div>
+                            < MyStopwatch />
+                        </div>) :
+                        null
+                    }
                     {/* pause and resume functionality */}
-                    {activity && <PauseResume activity={activity} />}
+                    {/* {activity && <PauseResume activity={activity} />} */}
                     {/* <DisplayDuration displayTime={activity?.endAt} /> */}
-                    <Button type="submit">{activity ? <Octagon /> : <Play />}</Button>
+                    {/* <Button type="submit">{activity ? <Octagon /> : <Play />}</Button> */}
                 </div>
             </form>
         </div>
