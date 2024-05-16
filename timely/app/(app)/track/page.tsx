@@ -7,10 +7,8 @@ import { Activity, Client, Project } from "@prisma/client"
 import { Hammer, Octagon, Play, UserRound } from "lucide-react"
 import { revalidatePath } from "next/cache"
 import { ActivityItemRow } from "./activity-item-row"
-import { ActivityDuration, MyStopwatch } from "./duration"
-import { pauseActivity, resumeActivity, stopActivity, upsertActivity } from "./actions"
-import { PauseResume } from "./pause-resume"
-import { ActivityProvider } from "./ActivityContext"
+import { Stopwatch } from "./duration"
+import { stopActivity, upsertActivity } from "./actions"
 
 type TimeProps = {
     startAt: string
@@ -75,26 +73,14 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                             </SelectGroup>
                         </SelectContent>
                     </Select>
-                    {activity && !activity.paused ? (
-                        <div>
-                            {/* <ActivityDuration startAt={activity.startAt} /> */}
-                            {/* < MyStopwatch /> */}
-                            {/* <ActivityDuration startAt={activity.startAt} /> */}
-
-                        </div>
-                    ) :
-                        null
+                    {
+                        activity ? (
+                            <div>
+                                < Stopwatch />
+                            </div>
+                        ) : null
                     }
-                    {activity ? (
-                        <div>
-                            < MyStopwatch />
-                        </div>) :
-                        null
-                    }
-                    {/* pause and resume functionality */}
-                    {/* {activity && <PauseResume activity={activity} />} */}
-                    {/* <DisplayDuration displayTime={activity?.endAt} /> */}
-                    {/* <Button type="submit">{activity ? <Octagon /> : <Play />}</Button> */}
+                    <Button type="submit">{activity ? <Octagon /> : <Play />}</Button>
                 </div>
             </form>
         </div>
@@ -171,12 +157,8 @@ export default async function TrackPage() {
 
     return (
         <div className="mx-auto container py-4 space-y-12">
-            <ActivityProvider>
-                <NewActivity activity={currentActivity} clients={clients} projects={projects} />
-                {/* <ResumeActivity activity={currentActivity} clients={clients} projects={projects} /> */}
-                <DailyActivites activites={dailyActivites} />
-            </ActivityProvider>
-
+            <NewActivity activity={currentActivity} clients={clients} projects={projects} />
+            <DailyActivites activites={dailyActivites} />
         </div>
     )
 }
