@@ -76,7 +76,7 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                     {
                         activity ? (
                             <div>
-                                < Stopwatch />
+                                < Stopwatch activity={activity} />
                             </div>
                         ) : null
                     }

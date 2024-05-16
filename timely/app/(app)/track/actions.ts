@@ -59,30 +59,6 @@ export async function upsertActivity(data: FormData) {
     revalidatePath('/track')
 }
 
-// export async function stopActivity(data: FormData) {
-//     'use server'
-
-//     const client = data.get('client') as string
-//     const project = data.get('project') as string
-
-
-//     await prisma.activity.update({
-//         where: {
-//             id: data.get('id') as string
-//         },
-//         data: {
-//             endAt: new Date(),
-//             name: data.get('name') as string,
-//             paused: false,
-//             endAtArray: {
-//                 push: new Date()
-//             },
-//             client: !!client ? { connect: { id: client } } : undefined,
-//             project: !!project ? { connect: { id: project } } : undefined
-//         }
-//     })
-//     revalidatePath('/track')
-// }
 
 export async function stopActivity(data: FormData) {
     'use server'

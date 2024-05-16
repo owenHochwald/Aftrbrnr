@@ -4,6 +4,7 @@ import { pad } from '@/lib/utils'
 import { useStopwatch } from 'react-timer-hook';
 import { Button } from '@/components/ui/button';
 import { Pause, Play } from 'lucide-react';
+import { pauseActivity, resumeActivity } from './actions';
 
 
 export function Stopwatch({ activity }: any) {
@@ -17,6 +18,18 @@ export function Stopwatch({ activity }: any) {
         pause,
     } = useStopwatch({ autoStart: true });
 
+    const handlePause = async () => {
+        await pauseActivity(activity); 
+        pause(); 
+    };
+
+    const handleStart = async () => {
+        console.log(activity)
+        await resumeActivity(activity); 
+        start(); 
+    };
+
+    
 
     return (
         <div className='flex items-center space-x-4'>
@@ -25,11 +38,11 @@ export function Stopwatch({ activity }: any) {
             </div>
             <div className='flex space-x-3'>
                 {isRunning ? (
-                    <Button type="button" onClick={pause}>
+                    <Button type="button" onClick={handlePause}>
                         <Pause strokeWidth={1.5} />
                     </Button>
                 ) : (
-                    <Button type="button" onClick={start}>
+                    <Button type="button" onClick={handleStart}>
                         <Play strokeWidth={1.5} />
                     </Button>
                 )}
