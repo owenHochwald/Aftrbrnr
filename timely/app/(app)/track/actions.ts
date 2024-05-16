@@ -71,7 +71,7 @@ export async function stopActivity(data: FormData) {
         }
     });
 
-    if (activity && !activity.paused) {
+    if (activity && activity.startAtArray.length > activity.endAtArray.length) {
         await prisma.activity.update({
             where: {
                 id: data.get('id') as string
@@ -79,7 +79,6 @@ export async function stopActivity(data: FormData) {
             data: {
                 endAt: new Date(),
                 name: data.get('name') as string,
-                paused: false,
                 endAtArray: {
                     push: new Date()
                 },
@@ -94,7 +93,6 @@ export async function stopActivity(data: FormData) {
             },
             data: {
                 name: data.get('name') as string,
-                paused: false,
                 endAtArray: {
                     push: new Date()
                 },
@@ -119,7 +117,6 @@ export async function pauseActivity(activity: any) {
             endAtArray: {
                 push: new Date()
             },
-            paused: true,
         }
     })
 }
@@ -138,7 +135,6 @@ export async function resumeActivity(activity: any) {
                 push: new Date()
             },
             name: activity.name as string,
-            paused: false,
         }
     })
 }
