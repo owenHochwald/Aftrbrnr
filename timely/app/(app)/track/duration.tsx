@@ -24,12 +24,9 @@ export function Stopwatch({ activity }: any) {
     };
 
     const handleStart = async () => {
-        console.log(activity)
         await resumeActivity(activity); 
         start(); 
     };
-
-    
 
     return (
         <div className='flex items-center space-x-4'>

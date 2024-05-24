@@ -3,7 +3,6 @@
 import { getUserSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
 
 export async function updateActivity(data: FormData) {
     await prisma.activity.update({
@@ -13,7 +12,7 @@ export async function updateActivity(data: FormData) {
         data: {
             name: data.get('name') as string,
             startAt: data.get('startAt') as string,
-            endAt: data.get('endAt') as string
+            duration: parseInt(data.get('duration') as string, 10)
         }
     })
 

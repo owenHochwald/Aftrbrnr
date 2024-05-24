@@ -18,19 +18,63 @@ import { pad } from '@/lib/utils';
 import { updateActivity, deleteActivity } from "./actions";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 
 type Props = {
     activity: Activity
 }
 
-type EditDateTimeprops = {
+type EditDateTimeProps = {
     name?: string
     value: Date
     onChange?: (value: Date) => void
 }
+type EditActivityDurationProps = {
+    name?: string
+    value: number
+    onChange?: (value: number) => void
+}
 
-const EditDateTime = ({ name, value, onChange }: EditDateTimeprops) => {
+const EditActivityDuration = ({ name, value, onChange }: EditActivityDurationProps) => {
+    const [duration, setDuration] = useState(value)
+    const formatDuration = (seconds: number) => {
+        const hours = Math.floor(seconds / 3600)
+        const minutes = Math.floor((seconds % 3600) / 60)
+        const remainingSeconds = seconds % 60
+        return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`
+    }
+    const [inputValue, setInputValue] = useState(formatDuration(value))
+
+
+    const parseDuration = (durationString: string) => {
+        const [hours, minutes, seconds] = durationString.split(':').map(Number)
+        return (hours * 3600) + (minutes * 60) + seconds
+    }
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const newValue = e.target.value
+        setInputValue(newValue)
+        const newDuration = parseDuration(newValue)
+        setDuration(newDuration)
+        onChange && onChange(newDuration)
+    }
+
+    return (
+        <div className="relative flex items-center">
+            <input type="hidden" name={name} value={duration.toString()} />
+            <Input
+                type="text"
+                value={inputValue}
+                className="pr-8"
+                onChange={handleInputChange}
+            />
+        </div>
+    )
+}
+
+
+const EditDateTime = ({ name, value, onChange }: EditDateTimeProps) => {
     const [date, setDate] = useState(value)
 
     const onDate = (d: Date | undefined) => {
@@ -95,10 +139,10 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                     className='w-[300px]'
                     type="text"
                     name="name"
-                    defaultValue={activity.name || ''}
+                    defaultValue={activity.name || 'Unnamed Task'}
                 />
                 <EditDateTime name="startAt" value={activity.startAt} />
-                <EditDateTime name="endAt" value={activity.endAt || new Date()} />
+                <EditActivityDuration name="duration" value={activity.duration} />
                 <span className="flex-grow" />
                 <Button type="submit" size={'icon'} variant={'ghost'}>
                     <SaveIcon />
@@ -119,20 +163,13 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
     return (
         <>
             <li className='py-3 space-x-5 flex items-center border-b '>
-                <span className="text-md font-medium w-1/4">{activity.name || 'Unnamed Task'}</span>
-                <span>
-                    {new Intl.DateTimeFormat(undefined, {
+                <span className="text-md font-medium w-1/5">{activity.name || 'Unnamed Task'}</span>
+                <Badge variant="secondary" className="center">
+                    Started at {new Intl.DateTimeFormat(undefined, {
                         hour: 'numeric',
                         minute: 'numeric',
                     }).format(activity.startAt)}
-                </span>
-                <ArrowRight size={20} />
-                <span>
-                    {new Intl.DateTimeFormat(undefined, {
-                        hour: 'numeric',
-                        minute: 'numeric',
-                    }).format(activity.endAt || new Date())}
-                </span>
+                </Badge>
                 <Badge variant="secondary" className="center">{((Math.abs((activity.endAt?.getTime() || 0) - (activity.startAt?.getTime() || 0)) / (1000 * 60 * 60)).toFixed(1))} hours</Badge>
                 <span className='flex-grow' />
 
@@ -159,7 +196,7 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
                         <AlertDialogFooter>
                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                             <AlertDialogAction className="hover:bg-red-700 bg-red-500" onClick={() => onDelete(activity.id)}>
-                                <TrashIcon size={20}/> Delete
+                                <TrashIcon size={20} /> Delete
                             </AlertDialogAction>
                         </AlertDialogFooter>
                     </AlertDialogContent>
