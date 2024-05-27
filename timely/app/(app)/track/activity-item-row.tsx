@@ -1,24 +1,19 @@
 'use client'
 
-import { Activity, Project } from "@prisma/client";
-import { ArrowRight, CalendarIcon, MoreHorizontal, PlayIcon, Save, SaveIcon, Settings, Settings2, Trash, TrashIcon } from "lucide-react";
+import { Activity } from "@prisma/client";
+import { CalendarIcon, PlayIcon, SaveIcon, Settings2, TrashIcon } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { Dialog, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 
 import { pad } from '@/lib/utils';
-// import { updateActivity, deleteActivity, resumeActivity, click } from "./actions";
 import { updateActivity, deleteActivity } from "./actions";
-import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 
 type Props = {
