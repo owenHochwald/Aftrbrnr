@@ -8,7 +8,7 @@ export default function AboutPage() {
         <div className="mx-auto container py-4">
             <h1 className="text-2xl font-bold mb-4">About Us</h1>
             <p className="text-gray-600 mb-4">
-                Our company is dedicated to providing high-quality time tracking software to teams worldwide. Here's a bit about us:
+                Our company is dedicated to providing high-quality time tracking software to teams worldwide. Heres a bit about us:
             </p>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
                 <Card>
