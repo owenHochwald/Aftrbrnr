@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import reports from '../../../public/images/home-page-content/reports.png';
 import Image from 'next/image';
+import placeHolderImage from './public/placeHolderImage.png';
 
 
 export const CardSelector: React.FC = () => {
@@ -41,7 +42,15 @@ export const CardSelector: React.FC = () => {
                             </p>
                         </div>
                         <div className="w-1/2 p-4">
-                            <img src="your-image.jpg" alt="Your Image" />
+                            <Image
+                                src={placeHolderImage}
+                                alt="Aftrbrnr Organized Time Tracking"
+                                className="h-screen w-full object-cover"
+                                style={{
+                                    width: 'auto',
+                                    height: 'auto',
+                                }}
+                            />
                         </div>
                     </div>
                 )}
@@ -56,7 +65,15 @@ export const CardSelector: React.FC = () => {
                             </p>
                         </div>
                         <div className="w-1/2 p-4">
-                            <img src="your-image.jpg" alt="Your Image" />
+                        <Image
+                                src={placeHolderImage}
+                                alt="Aftrbrnr Time Billing"
+                                className="h-screen w-full object-cover"
+                                style={{
+                                    width: 'auto',
+                                    height: 'auto',
+                                }}
+                            />
                         </div>
                     </div>
                 )}
