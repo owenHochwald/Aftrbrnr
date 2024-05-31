@@ -43,7 +43,7 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
                         <SelectContent>
                             <SelectGroup>
                                 <SelectLabel>Clients</SelectLabel>
-                                <SelectItem value="name">None</SelectItem>
+                                <SelectItem value="null">None</SelectItem>
                                 {
                                     clients.map((client) => (
                                         <SelectItem value={client.id} key={client.id}>
@@ -88,16 +88,19 @@ const NewActivity = ({ activity, clients, projects }: NewActivityProps) => {
 
 type DailyActivitesProps = {
     activites: Activity[]
+    clients: Client[] 
+    projects: Project[]
+
 }
 
-const DailyActivites = ({ activites }: DailyActivitesProps) => {
+const DailyActivites = ({ activites, clients, projects }: DailyActivitesProps) => {
 
     return (
         <div>
             <h2 className="text-lg mb-2 font-semibold">Your work for today!</h2>
             <ul>{
                 activites.map(activity => (
-                    <ActivityItemRow activity={activity} key={activity.id} />
+                    <ActivityItemRow activity={activity} projects={projects} clients={clients} key={activity.id} />
                 ))
             }</ul>
         </div>
@@ -157,7 +160,7 @@ export default async function TrackPage() {
     return (
         <div className="mx-auto container py-4 space-y-12">
             <NewActivity activity={currentActivity} clients={clients} projects={projects} />
-            <DailyActivites activites={dailyActivites} />
+            <DailyActivites activites={dailyActivites} clients={clients} projects={projects} />
         </div>
     )
 }

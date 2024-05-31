@@ -1,7 +1,7 @@
 'use client'
 
-import { Activity } from "@prisma/client";
-import { CalendarIcon, PlayIcon, SaveIcon, Settings2, TrashIcon } from "lucide-react";
+import { Activity, Client, Project } from "@prisma/client";
+import { CalendarIcon, Hammer, PlayIcon, SaveIcon, Settings2, TrashIcon, UserRound } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -11,13 +11,19 @@ import { Input } from "@/components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger } from "@/components/ui/select"
 
 import { pad } from '@/lib/utils';
 import { updateActivity, deleteActivity } from "./actions";
+import { getUserSession } from "@/lib/auth";
+import { prisma } from "@/lib/prisma";
+import { Label } from "@/components/ui/label";
 
 
 type Props = {
     activity: Activity
+    projects: Project[]
+    clients: Client[]
 }
 
 type EditDateTimeProps = {
@@ -115,11 +121,13 @@ const EditDateTime = ({ name, value, onChange }: EditDateTimeProps) => {
     )
 }
 
+
+
 type EditRowProps = Props & {
     onSave: () => void
 }
 
-const EditItemRow = ({ activity, onSave }: EditRowProps) => {
+const EditItemRow = ({ activity, projects, clients, onSave }: EditRowProps) => {
     // add a const user = await getUserSession() -> update the project and client with this new data
     return (
         <li className='py-5'>
@@ -130,20 +138,71 @@ const EditItemRow = ({ activity, onSave }: EditRowProps) => {
                 className='flex items-center space-x-2'
             >
                 <input type='hidden' defaultValue={activity.id} name="id" />
-                <Input
-                    className='w-[300px]'
-                    type="text"
-                    name="name"
-                    defaultValue={activity.name || 'Unnamed Task'}
-                />
-                <EditDateTime name="startAt" value={activity.startAt} />
-                <EditActivityDuration name="duration" value={activity.duration} />
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Name</Label>
+                    <Input
+                        className='w-[300px]'
+                        type="text"
+                        name="name"
+                        defaultValue={activity.name || 'Unnamed Task'}
+                    />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Start At</Label>
+                    <EditDateTime name="startAt" value={activity.startAt} />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Duration</Label>
+                    <EditActivityDuration name="duration" value={activity.duration} />
+                </div>
+                <div className="grid max-w-sm items-center gap-1.5">
+                    <Label>Client</Label>
+                    <Select name='client'>
+                        <SelectTrigger className="w-[60px]">
+                            <UserRound size={5} className="w-5 h-5" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Clients</SelectLabel>
+                                {
+                                    clients.map((client) => (
+                                        <SelectItem value={client.id} key={client.id}>
+                                            {client.name}
+                                        </SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+
+                <div className="grid w-full max-w-sm items-center gap-1.5">
+                    <Label>Project</Label>
+                    <Select name='project'>
+                        <SelectTrigger className="w-[60px]">
+                            <Hammer size={5} className="w-5 h-5" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                <SelectLabel>Projects</SelectLabel>
+                                {
+                                    projects.map((project) => (
+                                        <SelectItem value={project.id} key={project.id}>
+                                            {project.name}
+                                        </SelectItem>
+                                    ))
+                                }
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
+                </div>
+
                 <span className="flex-grow" />
                 <Button type="submit" size={'icon'} variant={'ghost'}>
                     <SaveIcon />
                 </Button>
             </form>
-        </li>
+        </li >
     )
 }
 
@@ -153,7 +212,7 @@ type ReadItemRowProps = Props & {
 }
 
 
-const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
+const ReadItemRow = ({ activity, clients, projects, onDelete, edit }: ReadItemRowProps) => {
 
     return (
         <>
@@ -201,13 +260,14 @@ const ReadItemRow = ({ activity, onDelete, edit }: ReadItemRowProps) => {
     );
 };
 
-export const ActivityItemRow = ({ activity }: Props) => {
+export const ActivityItemRow = ({ activity, projects, clients }: Props) => {
+
     const [isEditing, setIsEditing] = useState(false)
     return isEditing ? (
-        <EditItemRow activity={activity} onSave={() => setIsEditing(false)} />
+        <EditItemRow activity={activity} projects={projects} clients={clients} onSave={() => setIsEditing(false)} />
     ) : (
         <>
-            <ReadItemRow activity={activity} edit={() => setIsEditing(true)} onDelete={deleteActivity} />
+            <ReadItemRow activity={activity} projects={projects} clients={clients} edit={() => setIsEditing(true)} onDelete={deleteActivity} />
         </>
     )
 }

@@ -4,7 +4,26 @@ import { getUserSession } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 
+// export async function updateActivity(data: FormData) {
+//     await prisma.activity.update({
+//         where: {
+//             id: data.get('id') as string
+//         },
+//         data: {
+//             name: data.get('name') as string,
+//             startAt: data.get('startAt') as string,
+//             duration: parseInt(data.get('duration') as string, 10)
+//         }
+//     })
+
+//     revalidatePath('/track')
+// }
+
 export async function updateActivity(data: FormData) {
+    const client = data.get('client') as string
+// const client = data.get('client') as string ? { connect: { id: data.get('client') as string } } : undefined;
+    const project = data.get('project') as string
+
     await prisma.activity.update({
         where: {
             id: data.get('id') as string
@@ -12,7 +31,12 @@ export async function updateActivity(data: FormData) {
         data: {
             name: data.get('name') as string,
             startAt: data.get('startAt') as string,
-            duration: parseInt(data.get('duration') as string, 10)
+            duration: parseInt(data.get('duration') as string, 10),
+            client: !!client ? { connect: { id: client } } : undefined,
+            // client: client ? { connect: { id: client } } : null,
+            // client,
+
+            project: !!project ? { connect: { id: project } } : undefined
         }
     })
 
@@ -30,6 +54,7 @@ export async function deleteActivity(id: string) {
 
 export async function upsertActivity(data: FormData) {
     'use server'
+    console.log('hello')
     const user = await getUserSession()
     const client = data.get('client') as string
     const project = data.get('project') as string
