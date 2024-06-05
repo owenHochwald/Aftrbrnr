@@ -14,7 +14,7 @@ export default async function AdminLayout({
                     </Link>
                 </div>
             </div>
-            <div className="flex-grow w-full mx-auto">{children}</div>
+            <div className="flex-grow w-full mx-auto mt-5">{children}</div>
         </>
     )
 }
