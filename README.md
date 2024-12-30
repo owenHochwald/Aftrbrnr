@@ -1,7 +1,6 @@
 # Aftrbrnr - End to End Time Tracking SaaS
 
-
-(crl-k v to view preview)
+Our mission is to empower individuals and teams with a clean and efficient time tracking system, enabling them to make data-driven decisions and achieve their goals.
 
 ## Features
  - [X] Time Tracking by Activity
