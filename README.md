@@ -17,6 +17,9 @@ A modern, intuitive time tracking solution designed for professionals, teams, an
 - ✅ Secure Authentication
 - ✅ User Profiles
 - ✅ Organization Association
+- ✅ Team / Group Management
+- ✅ Role Asignments
+
 
 ### Project Management
 - ✅ Full CRUD Operations for Tickets
